@@ -6,66 +6,64 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    private readonly int DieHash = Animator.StringToHash("Dead");
+    private readonly int DieHash = Animator.StringToHash("Death");
 
-    [SerializeField] private float MaxHealth;
-    [SerializeField] private float currentHealth;
+    [SerializeField] internal float maxHealth = 100;
+    [SerializeField] internal float currentHealth = 100;
 
-    [HideInInspector][SerializeField] private Animator _animator;
+    [SerializeField] private Animator _animator;
 
     public Action OnDied;
     public UnityEvent<float> OnHealth;
 
-    private void OnValidate() => _animator = GetComponent<Animator>();
+    bool isDead = false;
+    public virtual void OnValidate() => _animator = GetComponentInChildren<Animator>();
 
-    private void Start()
+    protected virtual void Start()
     {
         Init();
+
     }
 
-    public void Init()
+    protected virtual void Init()
     {
         enabled = true;
-        currentHealth = MaxHealth;
-        OnHealth?.Invoke(currentHealth / MaxHealth);
+        currentHealth = maxHealth;
+        //OnHealth?.Invoke(currentHealth / MaxHealth);
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         CalculatorTakeDamage(damage);
        
         if (currentHealth <= 0)
         {
-            Dead();
-            HandleKillZombieEarnMoney();
+            if(!isDead)
+                Dead();
         }
     }
 
-    private void CalculatorTakeDamage(float damage)
+    public virtual void CalculatorTakeDamage(float damage)
     {
-        currentHealth -= damage;
-        OnHealth?.Invoke(currentHealth / MaxHealth);
+        currentHealth = Math.Clamp(currentHealth - damage, 0, maxHealth);
+        OnHealth?.Invoke(currentHealth / maxHealth);
     }
 
-    void HandleKillZombieEarnMoney()
+    public virtual void Dead()
     {
-    }
-
-    void Dead()
-    {
-        if (_animator != null)
-            _animator.SetTrigger(DieHash);
+        isDead = true;
 
         currentHealth = 0;
+
+        if (_animator != null)   _animator.SetTrigger(DieHash);
+
         OnDied?.Invoke();
     }
 
-    public void Heal(float amount)
+    public virtual void Heal(float amount)
     {
-        currentHealth += amount;
-        if (currentHealth > MaxHealth)
-            currentHealth = MaxHealth;
+        currentHealth = Math.Clamp(currentHealth + amount, 0, maxHealth);
 
-        OnHealth?.Invoke(currentHealth / MaxHealth);
+        OnHealth?.Invoke(currentHealth / maxHealth);
     }
 }

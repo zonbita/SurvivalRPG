@@ -9,7 +9,7 @@ public class CharacterBase : MonoBehaviour
 {
     public Action<GameObject> Action_Die;
     public Rigidbody rb;
-    public HealthBar healthBar;
+    public FillBar healthBar;
     public Animator animator;
     public TextMeshProUGUI nameTMP;
 
@@ -24,7 +24,7 @@ public class CharacterBase : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        healthBar = GetComponent<HealthBar>();
+        healthBar = GetComponent<FillBar>();
     }
 
     private void RegisterGameEvent()
