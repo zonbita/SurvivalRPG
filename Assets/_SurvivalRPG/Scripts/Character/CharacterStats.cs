@@ -14,6 +14,11 @@ public class CharacterStats : Health
 
     }
 
+    protected override void Dead()
+    {
+        base.Dead();
+    }
+
     public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);

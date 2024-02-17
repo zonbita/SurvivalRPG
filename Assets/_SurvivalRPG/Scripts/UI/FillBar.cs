@@ -18,8 +18,5 @@ public class FillBar : MonoBehaviour
         if (percent == image.fillAmount) return;
 
          image.fillAmount = (percent);
-
-
-        
     }
 }

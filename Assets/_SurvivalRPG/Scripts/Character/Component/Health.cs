@@ -11,7 +11,7 @@ public class Health : MonoBehaviour
     [SerializeField] internal float maxHealth = 100;
     [SerializeField] internal float currentHealth = 100;
 
-    [SerializeField] private Animator _animator;
+    [SerializeField] internal Animator _animator;
 
     public Action OnDied;
     public UnityEvent<float> OnHealth;
@@ -49,7 +49,7 @@ public class Health : MonoBehaviour
         OnHealth?.Invoke(currentHealth / maxHealth);
     }
 
-    public virtual void Dead()
+    protected virtual void Dead()
     {
         isDead = true;
 

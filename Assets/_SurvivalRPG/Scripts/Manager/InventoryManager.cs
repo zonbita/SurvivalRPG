@@ -44,6 +44,7 @@ public class InventoryManager : MonoBehaviour
 
     public int GetEmptySlot()
     {
+
         for (int i = 0; i < inventoryItem.Length - 1; i++)
         {
             if (inventoryItem[i] == null) return i;

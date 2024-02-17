@@ -1,21 +1,41 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
+    public enum EEventNames {UpdateXP};
     enum EGameState{ Start = 0, Play = 1, Pause = 2, Die = 3, Revive = 4, GameOver =5 };
 
     [HideInInspector] public Action GameStart, GamePause, GameResume, GamePlay, GameRevive, GameOver, UpLevel;
 
-    [SerializeField] GameObject PlayerPrefab;
-    [SerializeField] Transform ReviveTransform;
+    public System.Action<EEventNames, GameObject, System.Action> OnEventName;
 
-    [Header("--------[ GameObject ]-------")]
+    // Button
+    public Dictionary<ButtonType, List<Button>> btnDict = new Dictionary<ButtonType, List<Button>>();
+    [HideInInspector] public System.Action<ButtonType, GameObject, System.Action> ActionButtonClicked;
+
+
+    [Header("----------------[ GameObject ]---------------")]
+    [SerializeField] public FillBar hungerFillBar;
+    [SerializeField] public FillBar thirstyFillBar;
+    [SerializeField] public FillBar healthFillBar;
+    [Header("----------------[ GameObject ]---------------")]
+    [SerializeField] public Character_Player Player;
+    [SerializeField] public GameObject Notice_Board;
+    [SerializeField] Transform ReviveTransform;
     [SerializeField] public GameObject Canvas;
+    
+    [SerializeField] public FillBar XPHUD;
+
+    [Header("----------------[ HUD ]---------------")]
+    [SerializeField] public GameObject ReviveHud;
+
+    [Header("----------------[ Button ]---------------")]
+    [SerializeField] public Button PickupBtn;
+    [SerializeField] public Button AttackBtn;
 
     int currentExp = 0;
     int currentLevel = 1;
@@ -25,52 +45,81 @@ public class GameManager : Singleton<GameManager>
     int totalCoin = 0;
     [SerializeField] int ReviveCoin = 10;
     [SerializeField] TMP_Text[] totalCoinTMP;
+    [SerializeField] TMP_Text[] LevelTMP;
 
     private void Awake()
     {
-        GameOver += () =>
-        {
-            Time.timeScale = 0;
-
-        };
-
-
         GameStart += () =>
         {
             Character_Player cp = FindObjectOfType<Character_Player>();
+
             if (cp != null)
             {
                 GameRevive();
             }
-            else 
+            else
             {
-                Instantiate(PlayerPrefab);
+                if (Player != null)
+                    Instantiate(Player);
             }
-            
+
+        };
+
+        GameOver += () =>
+        {
+            //Time.timeScale = 0;
+            SwitchPanel(EPanel.Revive);
         };
 
         GameRevive += () =>
         {
-
+            SwitchPanel(EPanel.GamePlay);
         };
 
         UpLevel += () =>
         {
+            
+        };
+
+        OnEventName += (EventName, GameObject, action) =>
+        {
+            switch (EventName)
+            {
+                case EEventNames.UpdateXP:
+
+                    action.Invoke();
+                    break;
+            }
 
         };
 
+        ActionButtonClicked += (btnType, go, action) =>
+        {
+            switch (btnType)
+            {
+                case ButtonType.ATTACK:
+                    
+                    break;
+
+            }
+        };
     }
 
     private void Start()
     {
-
         Init();
     }
 
-    public void Init()
+    public async void Init()
     {
+        while (!hungerFillBar || !thirstyFillBar || !healthFillBar)
+        {
+            await System.Threading.Tasks.Task.Delay(100);
+        }
         GameStart();
         TotalCoin = PlayerPrefs.GetInt("Coin");
+        CurrentExp = PlayerPrefs.GetInt("XP");
+        Level = PlayerPrefs.GetInt("Level");
     }
 
     public int Level
@@ -78,6 +127,8 @@ public class GameManager : Singleton<GameManager>
         get => currentLevel;
         set
         {
+            foreach (var tmp in LevelTMP) tmp.SetText("Lv." + currentLevel);
+
             if (currentLevel == value) return;
 
             currentLevel++;
@@ -103,7 +154,7 @@ public class GameManager : Singleton<GameManager>
         if (TotalCoin >= ReviveCoin)
         {
             TotalCoin -= ReviveCoin;
-            
+            GameRevive();
         }
         else
         {
@@ -124,11 +175,55 @@ public class GameManager : Singleton<GameManager>
                 requireExp = (int)(requireExp * 1.5f);
               
                 UpLevel();
+               
             }
 
-
-            
+            if (XPHUD) XPHUD.SetPercent(currentLevel / requireExp);
         }
+    }
+
+    public void RegisterButton(ButtonManager b)
+    {
+        if (btnDict == null)
+            btnDict = new Dictionary<ButtonType, List<Button>>();
+
+        if (!btnDict.ContainsKey(b.btnType))
+            btnDict.Add(b.btnType, new List<Button>());
+
+        btnDict[b.btnType].Add(b.GetComponent<Button>());
+    }
+
+    public void ActivateButton(ButtonType btn)
+    {
+        if (btnDict.ContainsKey(btn))
+        {
+            foreach (var b in btnDict[btn])
+                b.interactable = true;
+        }
+    }
+
+    public void DisableButton(ButtonType btn)
+    {
+        if (btnDict.ContainsKey(btn))
+        {
+            foreach (var b in btnDict[btn])
+                b.interactable = false;
+        }
+    }
+
+    public async void SwitchPanel(EPanel panel)
+    {
+        switch(panel)
+        {
+            case EPanel.Revive:
+                await System.Threading.Tasks.Task.Delay(2000);
+                ReviveHud.SetActive(true);
+                break;
+            case EPanel.GamePlay:
+                ReviveHud.SetActive(false);
+                break;
+        }
+        
     }
 
     private void OnDisable()
@@ -136,9 +231,19 @@ public class GameManager : Singleton<GameManager>
         SaveGame();
     }
 
-    private void SaveGame()
+    private void OnApplicationQuit()
     {
+        //Debug.Log("Save");
+        SaveGame();
+    }
+
+    private void SaveGame()
+    { 
         PlayerPrefs.SetInt("Coin", TotalCoin);
+        PlayerPrefs.SetInt("XP", CurrentExp);
+        PlayerPrefs.SetInt("Level", Level);
         PlayerPrefs.Save();
     }
 }
+
+public enum EPanel { GamePlay, Inventory, Revive, Setting, Resume }

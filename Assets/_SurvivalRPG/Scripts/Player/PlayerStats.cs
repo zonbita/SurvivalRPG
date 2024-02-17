@@ -5,31 +5,40 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
-    [SerializeField] FillBar hungerFillBar, thirstyFillBar, healthFillBar;
     [SerializeField] List<Attribute> attributes;
     public enum EPlayerStats { Health, Hunger, Thirsty }
 
     public float maxHunger = 100f,maxThirsty = 100f;
     public float currentHunger;
     public float currentThirsty;
-    GameObject canvas;
+
+
     public override void Awake()
     {
-        canvas = GameObject.Find("Canvas");
-        healthFillBar = canvas.transform.Find("PlayerStats").Find("HP").GetComponentInChildren<FillBar>();
-        hungerFillBar = canvas.transform.Find("PlayerStats").Find("Food").GetComponentInChildren<FillBar>();
-        thirstyFillBar = canvas.transform.Find("PlayerStats").Find("Water").GetComponentInChildren<FillBar>();
+        base.Awake();
+        GameManager.Instance.GameRevive += GameRevive;
     }
+
+    private void GameRevive()
+    {
+        currentHealth = maxHealth;
+        currentHunger = maxHunger;
+        currentThirsty = maxThirsty;
+        GetHUD();
+        _animator.SetBool("Death", false);
+    }
+
+    private void GetHUD()
+    {
+        UpdateUI(EPlayerStats.Health);
+        UpdateUI(EPlayerStats.Hunger);
+        UpdateUI(EPlayerStats.Thirsty);
+    }
+
     protected override void Start()
     {
         base.Start();
 
-        GameManager.Instance.GameRevive += () =>
-        {
-            currentHealth = maxHealth;
-            currentHunger = maxHunger;
-            currentThirsty = maxThirsty;
-        };
     }
 
     public void SurvivalDamage(float damage, EPlayerStats type)
@@ -75,19 +84,29 @@ public class PlayerStats : CharacterStats
         currentThirsty = Mathf.Clamp(currentThirsty, 0, maxThirsty);
     }
 
+    protected override void Dead()
+    {
+        base.Dead();
+    }
+
     public void UpdateUI(EPlayerStats name)
     {
         switch (name)
         {
             case EPlayerStats.Hunger:
-                hungerFillBar.SetPercent(currentHunger, maxHunger);
+                GameManager.Instance.hungerFillBar.SetPercent(currentHunger, maxHunger);
                 break;
             case EPlayerStats.Thirsty:
-                thirstyFillBar.SetPercent(currentThirsty, maxThirsty);
+                GameManager.Instance.thirstyFillBar.SetPercent(currentThirsty, maxThirsty);
                 break;
             case EPlayerStats.Health:
-                healthFillBar.SetPercent(currentHealth, maxHealth);
+                GameManager.Instance.healthFillBar.SetPercent(currentHealth, maxHealth);
                 break;
         }
+    }
+
+    private void OnEnable()
+    {
+        GameManager.Instance.GameRevive += GameRevive;
     }
 }

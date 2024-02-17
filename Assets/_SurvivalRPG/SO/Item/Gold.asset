@@ -15,10 +15,14 @@ MonoBehaviour:
   Icon: {fileID: 0}
   ItemID: 4
   Name: Gold
+  Rarity: 5
   Description: '{1} <color = "Yellow">Gold</>'
   Prefab: {fileID: 1950871307682000, guid: 01348926c7cbb3347a006c37204131c3, type: 3}
   Quantity: 0
   MaxStack: 0
+  Duration: 100
   Tags: []
+  playerAction: 0
   Category: 3
+  EquipType: 0
   Attributes: []

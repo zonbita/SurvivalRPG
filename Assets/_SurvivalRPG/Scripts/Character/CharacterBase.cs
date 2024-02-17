@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class CharacterBase : MonoBehaviour
 {
     public Action<GameObject> Action_Die;
@@ -12,19 +14,22 @@ public class CharacterBase : MonoBehaviour
     public FillBar healthBar;
     public Animator animator;
     public TextMeshProUGUI nameTMP;
+    private NavMeshAgent navMesh;
 
     [Header("Tầm phát hiện")]
     public float detectRadius;
 
     [Header("Tốc độ di chuyển")]
     public float speed;
-    private bool bFreeze;
-    private float attackTime;
+    protected bool bFreeze;
+    protected float attackTime;
 
-    private void Awake()
+    public virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
         healthBar = GetComponent<FillBar>();
+        navMesh = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void RegisterGameEvent()

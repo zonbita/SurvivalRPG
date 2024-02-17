@@ -4,29 +4,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Movement))]
+[RequireComponent(typeof(MoveByKey))]
 [RequireComponent(typeof(PlayerStats))]
 [RequireComponent(typeof(SurvivalManager))]
 [RequireComponent(typeof(PlayerInventory))]
+[RequireComponent(typeof(AlwaysLookAt))]
 [RequireComponent (typeof(Looter))]
 public class Character_Player : CharacterBase
 {
-    Movement movement;
+    MoveByKey movement;
     PlayerStats playerStats;
     SurvivalManager survivalManager;
     PlayerInventory playerInventory;
+    AlwaysLookAt alwaysLookAt;
     Looter looter;
 
     CinemachineVirtualCamera virtualCamera;
 
  
-    private void Awake()
+    public override void Awake()
     {
-        movement = GetComponent<Movement>();
+        base.Awake();
+        movement = GetComponent<MoveByKey>();
         playerStats = GetComponent<PlayerStats>();
         survivalManager = GetComponent<SurvivalManager>();
         looter = GetComponent<Looter>();
         playerInventory = GetComponent<PlayerInventory>();
+        alwaysLookAt = GetComponent<AlwaysLookAt>();
         playerStats.OnDied += OnDied;
         playerStats.OnHealth.AddListener(OnHealth);
     }
@@ -42,12 +46,10 @@ public class Character_Player : CharacterBase
             movement.enabled = true;
             looter.enabled = true;
             survivalManager.enabled = true;
+            survivalManager.Revive();
+            alwaysLookAt.enabled = false;
+            playerStats.enabled = true;
         };
-    }
-
-    void Update()
-    {
-
     }
 
     private void OnDied()
@@ -57,13 +59,24 @@ public class Character_Player : CharacterBase
         survivalManager.enabled = false;
         GameManager.Instance.GameOver();
     }
+    
+    public override void Attack()
+    {
+/*        if (Time.time - attackTime < 0.5)
+            return;
+
+        attackTime = Time.time;*/
+
+        animator.SetTrigger("Attack");
+
+    }
 
     private void OnHealth(float hp)
     {
        
     }
 
- 
+    
 
 
 }

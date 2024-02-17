@@ -3,19 +3,19 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-[RequireComponent(typeof(Text))]
+
 public class InventorySlotChild_UI : MonoBehaviour
 {
     Image image;
     TMP_Text text;
     int slot = -1;
-    EEquipType equipType;
+    public EEquipType equipType;
     ItemSO itemSO;
 
     private void Awake()
     {
-        image = GetComponent<Image>();
-        text = GetComponent<TMP_Text>();
+        image = GetComponentInChildren<Image>();
+        text = GetComponentInChildren<TMP_Text>();
     }
 
     public void Set(ItemSO i)

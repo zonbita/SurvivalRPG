@@ -5,8 +5,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(Attribute))]
 [RequireComponent (typeof(Movement))]
-[RequireComponent(typeof(NavMeshAgent))]
-public class EnemyController : MonoBehaviour
+public class EnemyController : CharacterBase
 {
     Attribute attribute;
     Movement movement;
@@ -17,7 +16,6 @@ public class EnemyController : MonoBehaviour
     {
         attribute = GetComponent<Attribute>();
         movement = GetComponent<Movement>();
-        nav = GetComponent<NavMeshAgent>();
     }
 
 

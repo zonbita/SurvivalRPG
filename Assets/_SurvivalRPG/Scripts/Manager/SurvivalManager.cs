@@ -29,9 +29,20 @@ public class SurvivalManager : Singleton<SurvivalManager>
     {
         PlayerStats = GetComponent<PlayerStats>();
 
+        Revive();
+    }
+
+    private void OnEnable()
+    {
+        Revive();
+    }
+
+    public void Revive()
+    {
+        StopAllCoroutines();
+        hungerLevel = EHungerLevel.Level0;
         hungerCoroutine = StartCoroutine(DoHungerDamage(hungerDelay));
         thirstyCoroutine = StartCoroutine(DoThirstyDamage(thirstyDelay));
-    
     }
 
     void Update()

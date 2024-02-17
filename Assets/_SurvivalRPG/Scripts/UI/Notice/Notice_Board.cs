@@ -4,18 +4,20 @@ using UnityEngine.UI;
 
 public class Notice_Board : Singleton<Notice_Board>
 {
-    [SerializeField] GameObject Board;
+    GameObject Board;
     Text TMP_text;
     Coroutine coroutine;
     void Start()
     {
+        Board = GameManager.Instance.Notice_Board;
         TMP_text = GetComponentInChildren<Text>();
+        
     }
 
-    public void ShowNotice(string message = "", float delay = 2)
+    public void ShowNotice(string message, float delay)
     {
         Board.gameObject.SetActive(true);
-
+        if(!TMP_text) TMP_text = GetComponentInChildren<Text>();
         TMP_text.text = message;
         
         if (coroutine != null) StopCoroutine(coroutine);
