@@ -40,7 +40,7 @@ public class SurvivalManager : Singleton<SurvivalManager>
     public void Revive()
     {
         StopAllCoroutines();
-        hungerLevel = EHungerLevel.Level0;
+        healthCoroutine = null;
         hungerCoroutine = StartCoroutine(DoHungerDamage(hungerDelay));
         thirstyCoroutine = StartCoroutine(DoThirstyDamage(thirstyDelay));
     }

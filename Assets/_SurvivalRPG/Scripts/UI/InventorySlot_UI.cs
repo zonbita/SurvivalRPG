@@ -1,32 +1,63 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-[RequireComponent (typeof(Text))]
-public class InventorySlot_UI : MonoBehaviour
+public class InventorySlot_UI : MonoBehaviour, IDropHandler
 {
-    Image image;
-    TMP_Text text;
+    public System.Action<int, Image, int> OnSlotData;
+    [SerializeField]Image imageItem;
+    [SerializeField]TMP_Text Quantitytext;
+    [SerializeField]DragItem_UI dragItem;
+    InventoryManager manager;
     int slot = -1;
-    EEquipType equipType;
-    ItemSO itemSO;
 
-    private void Awake()
+
+    public void Init(InventoryManager manager, int slot, Sprite imageItem, int quantity)
     {
-        image = GetComponent<Image>();
-        text = GetComponent<TMP_Text>();
+        Set(manager, slot, imageItem, quantity);
     }
 
-    public void Init(int Slot = -1)
+    public void Set(InventoryManager manager, int slot, Sprite imageItem, int quantity)
     {
-        slot = Slot;
-
+        this.manager = manager;
+        this.slot = slot;
+        SetImage(imageItem);
+        SetQuantity(quantity);
     }
 
-    public void Set(int Slot, ItemSO i)
+    public void SetEmpty()
     {
-        slot = Slot;
-        itemSO = i;
+        slot = -1;
+        Quantitytext.enabled = false;
+        imageItem.enabled = false; 
+    }
+
+
+    void SetImage(Sprite imageItem)
+    {
+        if(imageItem != null)
+        {
+            this.imageItem.enabled = true;
+            this.imageItem.overrideSprite = imageItem;
+        }
+        else
+        {
+            this.imageItem.enabled = false;
+        }
+       
+    }
+
+    void SetQuantity(int quantity)
+    {
+        Quantitytext.enabled = (quantity < 1 ? false : true);
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+
+        GameObject go = eventData.pointerDrag;
+        InventorySlot_UI inv = go.GetComponent<InventorySlot_UI>();
     }
 }

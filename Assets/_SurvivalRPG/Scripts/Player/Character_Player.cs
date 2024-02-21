@@ -12,6 +12,7 @@ using UnityEngine;
 [RequireComponent (typeof(Looter))]
 public class Character_Player : CharacterBase
 {
+    private readonly int AttackHash = Animator.StringToHash("Attack");
     MoveByKey movement;
     PlayerStats playerStats;
     SurvivalManager survivalManager;
@@ -20,11 +21,10 @@ public class Character_Player : CharacterBase
     Looter looter;
 
     CinemachineVirtualCamera virtualCamera;
-
- 
-    public override void Awake()
+    protected override void Awake()
     {
         base.Awake();
+        
         movement = GetComponent<MoveByKey>();
         playerStats = GetComponent<PlayerStats>();
         survivalManager = GetComponent<SurvivalManager>();
@@ -38,15 +38,15 @@ public class Character_Player : CharacterBase
     {
         virtualCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CinemachineVirtualCamera>();
         virtualCamera.Follow = this.transform;
-
-        playerInventory.InitInventory(10, null);
+       
+        playerInventory.InitInventory(25, null);
 
         GameManager.Instance.GameRevive += () => 
         {
+            _animator.Play("Idle");
             movement.enabled = true;
             looter.enabled = true;
             survivalManager.enabled = true;
-            survivalManager.Revive();
             alwaysLookAt.enabled = false;
             playerStats.enabled = true;
         };
@@ -62,13 +62,11 @@ public class Character_Player : CharacterBase
     
     public override void Attack()
     {
-/*        if (Time.time - attackTime < 0.5)
-            return;
+        /*        if (Time.time - attackTime < 0.5)
+                    return;
 
-        attackTime = Time.time;*/
-
-        animator.SetTrigger("Attack");
-
+                attackTime = Time.time;*/
+        _animator.SetTrigger(AttackHash);
     }
 
     private void OnHealth(float hp)

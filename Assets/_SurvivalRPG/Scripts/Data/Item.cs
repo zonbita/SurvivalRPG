@@ -51,7 +51,7 @@ public  class Item : MonoBehaviour, IAction
                 color = "white";
                 break;
             case EItemRarity.Common:
-                color = "blue";
+                color = "aqua";
                 break;
             case EItemRarity.Rare:
                 color = "Orange";

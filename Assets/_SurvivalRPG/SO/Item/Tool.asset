@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b703baeb3edb54594cdd91b92f4a86, type: 3}
   m_Name: Tool
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
   ItemID: 1
   Name: Pick Axe
-  Rarity: 2
+  Rarity: 0
   Description: Pick Axe
   Prefab: {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527, type: 3}
   Quantity: 0

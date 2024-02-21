@@ -30,7 +30,7 @@ public class ButtonManager : MonoBehaviour
 
     public System.Action action;
 
-    private void Awake()
+    private void Start()
     {
         GetComponent<Button>().onClick.AddListener(() =>
         {
@@ -39,10 +39,6 @@ public class ButtonManager : MonoBehaviour
         });
 
         GameManager.Instance.RegisterButton(this);
-    }
-
-    private void Start()
-    {
     }
 
     public void SetFrame(Sprite sprite)
@@ -74,7 +70,8 @@ public enum ButtonType
     SKIN,
     SETTINGS,
     WHEEL,
-    ATTACK,
+    ATTACK1,
+    ATTACK2,
     BACK,
     PLAY,
     NEXT,

@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6159139789536811878}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -87,7 +86,7 @@ GameObject:
   - component: {fileID: 6159139789536811878}
   - component: {fileID: 6159139789536811866}
   - component: {fileID: 6159139789536811865}
-  - component: {fileID: 6159139789536811879}
+  - component: {fileID: 3202106486860672211}
   m_Layer: 0
   m_Name: EquipChildSlot
   m_TagString: Untagged
@@ -111,7 +110,6 @@ RectTransform:
   - {fileID: 6159139791286726802}
   - {fileID: 1533689268478519400}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -156,7 +154,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6159139789536811879
+--- !u!114 &3202106486860672211
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,9 +163,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 6159139789536811877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 276e630000820bb47a57c3ce3afc1532, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e239cb942ebd3945a8e7ca93ce74a8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  imageList:
+  - {fileID: 21300000, guid: 1ff18920df7230a4dbc8e9e75c4ed7e5, type: 3}
+  - {fileID: 21300000, guid: 9c443e725aede404ab4a473f96e7f585, type: 3}
+  - {fileID: 21300000, guid: e1ba674e14010ec4580da105317b7b77, type: 3}
+  - {fileID: 21300000, guid: 5ab71ab515b5c864b99cbc0e848d3662, type: 3}
+  - {fileID: 21300000, guid: f3372779de276dc48accf9af14b380d9, type: 3}
+  - {fileID: 21300000, guid: 97eb33f17282b874aafc04781652f343, type: 3}
+  - {fileID: 21300000, guid: 9a82544a4e8ea82448062dac5853f931, type: 3}
+  - {fileID: 21300000, guid: 0e0bedb917191584aa27b1e2134fecab, type: 3}
+  imageItem: {fileID: 6159139790505131911}
+  Quantitytext: {fileID: 6159139791286726803}
+  dragItem: {fileID: 0}
   equipType: 0
 --- !u!1 &6159139790505131909
 GameObject:
@@ -200,7 +210,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6159139789536811878}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -276,7 +285,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6159139789536811878}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -298,7 +306,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6159139791286726801}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 

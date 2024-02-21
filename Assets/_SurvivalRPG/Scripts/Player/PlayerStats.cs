@@ -24,8 +24,8 @@ public class PlayerStats : CharacterStats
         currentHealth = maxHealth;
         currentHunger = maxHunger;
         currentThirsty = maxThirsty;
+        isDead = false;
         GetHUD();
-        _animator.SetBool("Death", false);
     }
 
     private void GetHUD()
@@ -94,13 +94,13 @@ public class PlayerStats : CharacterStats
         switch (name)
         {
             case EPlayerStats.Hunger:
-                GameManager.Instance.hungerFillBar.SetPercent(currentHunger, maxHunger);
+                GameManager.Instance.hungerFillBar?.SetPercent(currentHunger, maxHunger);
                 break;
             case EPlayerStats.Thirsty:
-                GameManager.Instance.thirstyFillBar.SetPercent(currentThirsty, maxThirsty);
+                GameManager.Instance.thirstyFillBar?.SetPercent(currentThirsty, maxThirsty);
                 break;
             case EPlayerStats.Health:
-                GameManager.Instance.healthFillBar.SetPercent(currentHealth, maxHealth);
+                GameManager.Instance.healthFillBar?.SetPercent(currentHealth, maxHealth);
                 break;
         }
     }

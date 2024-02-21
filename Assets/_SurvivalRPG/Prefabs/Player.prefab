@@ -110,9 +110,6 @@ MonoBehaviour:
   OnHealth:
     m_PersistentCalls:
       m_Calls: []
-  hungerFillBar: {fileID: 0}
-  thirstyFillBar: {fileID: 0}
-  healthFillBar: {fileID: 0}
   attributes: []
   maxHunger: 100
   maxThirsty: 100
@@ -166,9 +163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a98d3c8a253fd2744a6e5c109583d78e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
+  rb: {fileID: 4375152441441640307}
   healthBar: {fileID: 0}
-  animator: {fileID: 0}
+  _animator: {fileID: 267273475395558710}
   nameTMP: {fileID: 0}
   detectRadius: 0
   speed: 6

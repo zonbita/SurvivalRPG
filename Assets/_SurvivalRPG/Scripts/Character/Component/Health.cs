@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    private readonly int DieHash = Animator.StringToHash("Death");
+    internal readonly int DieHash = Animator.StringToHash("Death");
 
     [SerializeField] internal float maxHealth = 100;
     [SerializeField] internal float currentHealth = 100;
@@ -16,7 +16,7 @@ public class Health : MonoBehaviour
     public Action OnDied;
     public UnityEvent<float> OnHealth;
 
-    bool isDead = false;
+    internal bool isDead = false;
     public virtual void OnValidate() => _animator = GetComponentInChildren<Animator>();
 
     protected virtual void Start()

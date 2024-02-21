@@ -7,8 +7,8 @@ public class CharacterStats : Health
 {
     public virtual void Awake()
     {
-        
     }
+
     protected override void Start()
     {
 

@@ -1,4 +1,5 @@
 using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +16,9 @@ public class InventoryManager : MonoBehaviour
     bool isFull = false;
 
     // Event
-    public System.Action<int, ItemSO> OnInventoryChangeSlot;
-
-    public void InitInventory(int size, ItemSO[] item)
+    public System.Action<InventoryManager,int, ItemSO> OnInventoryChangeSlot;
+    public Action OnInit;
+    public virtual void InitInventory(int size, ItemSO[] item)
     {
 
         inventoryItem = new ItemSO[size];
@@ -31,6 +32,7 @@ public class InventoryManager : MonoBehaviour
             if (item[i] != null && inventoryItem[i])
             inventoryItem[i] = item[i];
         }
+        OnInit?.Invoke();
     }
 
     public bool CheckFull()
@@ -84,6 +86,7 @@ public class InventoryManager : MonoBehaviour
         if (index != -1)
         {
             inventoryItem[index] = item;
+            OnInventoryChangeSlot?.Invoke(this, index,item);
         }
     }
 }

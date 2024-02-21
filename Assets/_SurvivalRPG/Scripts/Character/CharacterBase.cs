@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,7 +10,7 @@ public class CharacterBase : MonoBehaviour
     public Action<GameObject> Action_Die;
     public Rigidbody rb;
     public FillBar healthBar;
-    public Animator animator;
+    public Animator _animator; 
     public TextMeshProUGUI nameTMP;
     private NavMeshAgent navMesh;
 
@@ -23,13 +21,11 @@ public class CharacterBase : MonoBehaviour
     public float speed;
     protected bool bFreeze;
     protected float attackTime;
-
-    public virtual void Awake()
+    protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
         healthBar = GetComponent<FillBar>();
         navMesh = GetComponent<NavMeshAgent>();
-        animator = GetComponentInChildren<Animator>();
     }
 
     private void RegisterGameEvent()

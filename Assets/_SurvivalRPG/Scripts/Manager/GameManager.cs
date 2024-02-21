@@ -4,8 +4,10 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+    
     public enum EEventNames {UpdateXP};
     enum EGameState{ Start = 0, Play = 1, Pause = 2, Die = 3, Revive = 4, GameOver =5 };
 
@@ -30,9 +32,12 @@ public class GameManager : Singleton<GameManager>
     
     [SerializeField] public FillBar XPHUD;
 
+    [Tooltip("0:GamePlay - 1:Inventory")]
     [Header("----------------[ HUD ]---------------")]
     [SerializeField] public GameObject ReviveHud;
-
+    [SerializeField] public GameObject SwitchPanels;
+    [SerializeField] public GameObject InventoryHud;
+    [SerializeField] public GameObject InventorySlotUI;
     [Header("----------------[ Button ]---------------")]
     [SerializeField] public Button PickupBtn;
     [SerializeField] public Button AttackBtn;
@@ -49,6 +54,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
+        Instance = this;
         GameStart += () =>
         {
             Character_Player cp = FindObjectOfType<Character_Player>();
@@ -97,8 +103,8 @@ public class GameManager : Singleton<GameManager>
         {
             switch (btnType)
             {
-                case ButtonType.ATTACK:
-                    
+                case ButtonType.ATTACK1:
+                    Player.Attack();
                     break;
 
             }
@@ -211,6 +217,14 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public void CallPanel(int i)
+    {
+       
+        EPanel panel = (EPanel)i;
+        print(panel);
+        SwitchPanel(panel);
+    }
+
     public async void SwitchPanel(EPanel panel)
     {
         switch(panel)
@@ -221,6 +235,10 @@ public class GameManager : Singleton<GameManager>
                 break;
             case EPanel.GamePlay:
                 ReviveHud.SetActive(false);
+                SwitchPanels.SetActive(false);
+                break;
+            case EPanel.Inventory:
+                SwitchPanels.SetActive(true);
                 break;
         }
         
