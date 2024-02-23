@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
-    [SerializeField] List<Attribute> attributes;
+    [SerializeField] internal List<Attribute> attributes;
     public enum EPlayerStats { Health, Hunger, Thirsty }
 
     public float maxHunger = 100f,maxThirsty = 100f;

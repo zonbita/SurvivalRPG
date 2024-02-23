@@ -20,10 +20,9 @@ public class InventorySlotChild_UI : MonoBehaviour
 
     public void Set(ItemSO i)
     {
-        if(i.EquipType != equipType)
-        {
+
             itemSO = i;
-        }
+        
     }
 
     public void SetEmpty()

@@ -12,19 +12,28 @@ using UnityEngine;
 [RequireComponent (typeof(Looter))]
 public class Character_Player : CharacterBase
 {
+    public static Character_Player Instance;
     private readonly int AttackHash = Animator.StringToHash("Attack");
-    MoveByKey movement;
-    PlayerStats playerStats;
-    SurvivalManager survivalManager;
-    PlayerInventory playerInventory;
-    AlwaysLookAt alwaysLookAt;
-    Looter looter;
+    internal MoveByKey movement;
+    internal PlayerStats playerStats;
+    internal SurvivalManager survivalManager;
+    internal PlayerInventory playerInventory;
+    internal AlwaysLookAt alwaysLookAt;
+    internal Looter looter;
+
+    [Header("Equipment")]
+    public Transform headTransform;
+    public Transform chestTransform;
+    public Transform legsTransform;
+    public Transform feetTransform;
+    public Transform rightHandTransform;
+    public Transform leftHandTransform;
 
     CinemachineVirtualCamera virtualCamera;
     protected override void Awake()
     {
         base.Awake();
-        
+        if (!Instance) Instance = this;
         movement = GetComponent<MoveByKey>();
         playerStats = GetComponent<PlayerStats>();
         survivalManager = GetComponent<SurvivalManager>();
@@ -39,7 +48,7 @@ public class Character_Player : CharacterBase
         virtualCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CinemachineVirtualCamera>();
         virtualCamera.Follow = this.transform;
        
-        playerInventory.InitInventory(25, null);
+        playerInventory.InitInventory(25, null, 0);
 
         GameManager.Instance.GameRevive += () => 
         {

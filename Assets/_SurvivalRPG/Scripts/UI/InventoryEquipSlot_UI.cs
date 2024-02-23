@@ -1,25 +1,33 @@
 using UnityEngine.UI;
 using UnityEngine;
-using System;
 using TMPro;
 using UnityEngine.EventSystems;
+using System;
 
 [RequireComponent(typeof(Image))]
-public class InventoryEquipSlot_UI : MonoBehaviour, IDropHandler
+
+public class InventoryEquipSlot_UI : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
     public System.Action<int, Image, int> OnSlotData;
-    [SerializeField] Sprite[] imageList;
+
     [SerializeField] Image imageItem;
     [SerializeField] TMP_Text Quantitytext;
     [SerializeField] DragItem_UI dragItem;
     public EEquipType equipType;
-
+    public System.Action<Equip> OnChangeEquipSlot;
     int slot = -1;
+
+    private void OnValidate()
+    {
+      
+    }
+
+
 
     private void Awake()
     {
-        if(imageList[(int)equipType] != null)
-        imageItem.sprite = imageList[(int)equipType];
+        if(EquipManager.Instance.imageList[(int)equipType] != null)
+        imageItem.sprite = EquipManager.Instance.imageList[(int)equipType];
     }
 
     public void Init(int slot, int quantity)
@@ -48,12 +56,22 @@ public class InventoryEquipSlot_UI : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-
         GameObject go = eventData.pointerDrag;
-        DragItem_UI d = go.GetComponent<DragItem_UI>();
-        d.RootTransform = transform;
-        dragItem.RootTransform = d.RootTransform;
+        DragItem_UI drag = go.GetComponent<DragItem_UI>();
 
 
+        if (drag.SlotUI.inv == null) return;
+
+        bool b = drag.SlotUI.inv.SwitchEquipItem(drag.SlotUI.slot, equipType);
+        if (b)
+        {
+            //OnChangeEquipSlot?.Invoke();
+        }
+        
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        
     }
 }

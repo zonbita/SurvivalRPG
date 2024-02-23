@@ -62,11 +62,11 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 2
+  m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!136 &4375152441441636488
@@ -110,7 +110,35 @@ MonoBehaviour:
   OnHealth:
     m_PersistentCalls:
       m_Calls: []
-  attributes: []
+  attributes:
+  - attribute: 0
+    Value: 5
+  - attribute: 4
+    Value: 1
+  - attribute: 1
+    Value: 1
+  - attribute: 2
+    Value: 0
+  - attribute: 3
+    Value: 0
+  - attribute: 5
+    Value: 0
+  - attribute: 6
+    Value: 0
+  - attribute: 7
+    Value: 0
+  - attribute: 8
+    Value: 0
+  - attribute: 9
+    Value: 0
+  - attribute: 11
+    Value: 0
+  - attribute: 12
+    Value: 0
+  - attribute: 13
+    Value: 0
+  - attribute: 14
+    Value: 0
   maxHunger: 100
   maxThirsty: 100
   currentHunger: 100
@@ -128,11 +156,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hungerDelay: 2
-  hungerDamage: 15
+  hungerDamage: 1
   thirstyDelay: 2
   thirstyDamage: 1
   healthDelay: 2
-  healthDamage: 20
+  healthDamage: 1
 --- !u!114 &4375152441441636490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,6 +197,13 @@ MonoBehaviour:
   nameTMP: {fileID: 0}
   detectRadius: 0
   speed: 6
+  target: {fileID: 0}
+  headTransform: {fileID: 1151724230302660680}
+  chestTransform: {fileID: 3996038954805802532}
+  legsTransform: {fileID: 1274761331918221958}
+  feetTransform: {fileID: 6047571525537074423}
+  rightHandTransform: {fileID: 735961059706221950}
+  leftHandTransform: {fileID: 735961059706221950}
 --- !u!114 &1617663433125350246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,7 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c5e00ed4e9acba48abb5b2461fb25db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryItem: []
 --- !u!195 &3645044219199029420
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -189,7 +223,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4375152441441640318}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -227,7 +261,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4375152441441640318}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 925b1009fc5aef0408fa2869b5840404, type: 3}
   m_Name: 
@@ -899,9 +933,39 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 4375152442368776858}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &735961059706221950 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3927421827543855076, guid: 60770bdb4dc667c45bea53db0339dc05,
+    type: 3}
+  m_PrefabInstance: {fileID: 4375152442368776858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1151724230302660680 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3696354557974323922, guid: 60770bdb4dc667c45bea53db0339dc05,
+    type: 3}
+  m_PrefabInstance: {fileID: 4375152442368776858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1274761331918221958 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3244691087426676764, guid: 60770bdb4dc667c45bea53db0339dc05,
+    type: 3}
+  m_PrefabInstance: {fileID: 4375152442368776858}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3405028225084650579 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05,
+    type: 3}
+  m_PrefabInstance: {fileID: 4375152442368776858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3996038954805802532 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 847628592748719294, guid: 60770bdb4dc667c45bea53db0339dc05,
+    type: 3}
+  m_PrefabInstance: {fileID: 4375152442368776858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6047571525537074423 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8023976056550938221, guid: 60770bdb4dc667c45bea53db0339dc05,
     type: 3}
   m_PrefabInstance: {fileID: 4375152442368776858}
   m_PrefabAsset: {fileID: 0}

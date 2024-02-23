@@ -6,29 +6,52 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class InventorySlot_UI : MonoBehaviour, IDropHandler
 {
-    public System.Action<int, Image, int> OnSlotData;
-    [SerializeField]Image imageItem;
-    [SerializeField]TMP_Text Quantitytext;
-    [SerializeField]DragItem_UI dragItem;
-    InventoryManager manager;
-    int slot = -1;
+    [SerializeField] Image imageItem;
+    [SerializeField] TMP_Text Quantitytext;
+    [SerializeField] DragItem_UI dragItem;
+    [SerializeField] public InventoryManager inv;
+    [HideInInspector] public int slot = -1;
 
 
-    public void Init(InventoryManager manager, int slot, Sprite imageItem, int quantity)
+    public void Init(InventoryManager inv, int slot)
     {
-        Set(manager, slot, imageItem, quantity);
+        Set(inv, slot);
     }
 
-    public void Set(InventoryManager manager, int slot, Sprite imageItem, int quantity)
+    public void Set(InventoryManager inv, int slot)
     {
-        this.manager = manager;
+        this.inv = inv;
         this.slot = slot;
-        SetImage(imageItem);
-        SetQuantity(quantity);
+        if(inv.inventoryItem[slot].Data != null )
+        {
+            SetImage(inv.inventoryItem[slot].Data.Icon);
+            SetQuantity(inv.inventoryItem[slot].Quantity);
+        }
+        else
+        {
+            SetImage(null);
+            SetQuantity(0);
+        }
     }
 
-    public void SetEmpty()
+    public void SetNew()
     {
+
+        if (inv.inventoryItem[slot].Data != null)
+        {
+            SetImage(inv.inventoryItem[slot].Data.Icon);
+            SetQuantity(inv.inventoryItem[slot].Quantity);
+        }
+        else
+        {
+            SetImage(null);
+            SetQuantity(0);
+        }
+    }
+
+    public void SetEmpty(InventoryManager inv)
+    {
+        this.inv = inv;
         slot = -1;
         Quantitytext.enabled = false;
         imageItem.enabled = false; 
@@ -52,12 +75,24 @@ public class InventorySlot_UI : MonoBehaviour, IDropHandler
     void SetQuantity(int quantity)
     {
         Quantitytext.enabled = (quantity < 1 ? false : true);
+        Quantitytext.text = quantity + "";
     }
 
     public void OnDrop(PointerEventData eventData)
     {
 
         GameObject go = eventData.pointerDrag;
-        InventorySlot_UI inv = go.GetComponent<InventorySlot_UI>();
+        DragItem_UI drag = go.GetComponent<DragItem_UI>();
+
+        if (drag.SlotUI.inv == null || inv == null) return;
+
+        if (drag.SlotUI.inv != inv) // Inventory is not the same
+        {
+            
+        }
+        else
+        {
+            inv.SwitchItem(drag.SlotUI.slot, slot);
+        }
     }
 }

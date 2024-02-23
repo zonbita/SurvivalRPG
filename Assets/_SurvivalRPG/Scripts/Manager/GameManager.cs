@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
+[RequireComponent(typeof(AttributeManager))]
+[RequireComponent(typeof(EquipManager))]
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -21,26 +24,27 @@ public class GameManager : MonoBehaviour
 
 
     [Header("----------------[ GameObject ]---------------")]
-    [SerializeField] public FillBar hungerFillBar;
-    [SerializeField] public FillBar thirstyFillBar;
-    [SerializeField] public FillBar healthFillBar;
+    public FillBar hungerFillBar;
+    public FillBar thirstyFillBar;
+    public FillBar healthFillBar;
     [Header("----------------[ GameObject ]---------------")]
-    [SerializeField] public Character_Player Player;
-    [SerializeField] public GameObject Notice_Board;
-    [SerializeField] Transform ReviveTransform;
-    [SerializeField] public GameObject Canvas;
+    public Character_Player Player;
+    public GameObject Notice_Board;
+
+    public Transform ReviveTransform;
+    public GameObject Canvas;
     
-    [SerializeField] public FillBar XPHUD;
+    public FillBar XPHUD;
 
     [Tooltip("0:GamePlay - 1:Inventory")]
     [Header("----------------[ HUD ]---------------")]
-    [SerializeField] public GameObject ReviveHud;
-    [SerializeField] public GameObject SwitchPanels;
-    [SerializeField] public GameObject InventoryHud;
-    [SerializeField] public GameObject InventorySlotUI;
+    public GameObject ReviveHud;
+    public GameObject SwitchPanels;
+    public GameObject InventoryHud;
+    public GameObject InventorySlotUI;
     [Header("----------------[ Button ]---------------")]
-    [SerializeField] public Button PickupBtn;
-    [SerializeField] public Button AttackBtn;
+    public Button PickupBtn;
+    public Button AttackBtn;
 
     int currentExp = 0;
     int currentLevel = 1;
@@ -57,18 +61,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         GameStart += () =>
         {
-            Character_Player cp = FindObjectOfType<Character_Player>();
-
-            if (cp != null)
-            {
-                GameRevive();
-            }
-            else
-            {
-                if (Player != null)
-                    Instantiate(Player);
-            }
-
+            StartCoroutine(Spawn_Player());
         };
 
         GameOver += () =>
@@ -128,6 +121,27 @@ public class GameManager : MonoBehaviour
         Level = PlayerPrefs.GetInt("Level");
     }
 
+    IEnumerator Spawn_Player()
+    {
+        Character_Player cp = FindObjectOfType<Character_Player>();
+
+        if (cp != null)
+        {
+            GameRevive();
+        }
+        else
+        {
+            if (Player != null)
+            {
+                GameObject go = Instantiate(Player).transform.gameObject;
+                cp = go.GetComponent<Character_Player>();
+            }
+            SwitchPanel(EPanel.GamePlay);
+        }
+        yield return new WaitUntil(() => cp != null);
+        AttributeManager.Instance.UpdatePlayerAttribute();
+    }
+
     public int Level
     {
         get => currentLevel;
@@ -184,7 +198,10 @@ public class GameManager : MonoBehaviour
                
             }
 
-            if (XPHUD) XPHUD.SetPercent(currentLevel / requireExp);
+            if (XPHUD) {
+                XPHUD.SetPercent(currentExp , requireExp);
+
+            } 
         }
     }
 
@@ -219,9 +236,7 @@ public class GameManager : MonoBehaviour
 
     public void CallPanel(int i)
     {
-       
         EPanel panel = (EPanel)i;
-        print(panel);
         SwitchPanel(panel);
     }
 

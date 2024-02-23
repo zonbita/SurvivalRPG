@@ -6,37 +6,49 @@ using UnityEngine;
 public class PlayerInventory : InventoryManager
 {
     public static PlayerInventory Instance { get; private set; }
+    public int SelectItem {  get; private set; }
+
     private void Awake()
     {
         Instance = this;
     }
 
-    public override void InitInventory(int size, ItemSO[] item)
+    public override void InitInventory(int size, ItemSO[] item, int quantity)
     {
-        base.InitInventory(size, item);
+        base.InitInventory(size, item, quantity);
         GenerateUI();
         OnInventoryChangeSlot += OnChange;
+        OnInventoryChange2Slot += OnChange2Slot;
+    }
+    private void OnChange(InventoryManager manager, int index)
+    {
+
+        if (GameManager.Instance.InventoryHud == null) return;
+
+        InventorySlot_UI ui = GameManager.Instance.InventoryHud.transform.GetChild(index).GetComponent<InventorySlot_UI>();
+        ui.SetNew();
     }
 
-    private void OnChange(InventoryManager manager, int index, ItemSO sO)
+    private void OnChange2Slot(InventoryManager manager, int index1, int index2)
     {
-        
         if (GameManager.Instance.InventoryHud == null) return;
-        
-        InventorySlot_UI ui = GameManager.Instance.InventoryHud.transform.GetChild(index).GetComponent<InventorySlot_UI>();
-        ui.Set(this, index, inventoryItem[index].Icon, inventoryItem[index].Quantity);
+
+        InventorySlot_UI ui = GameManager.Instance.InventoryHud.transform.GetChild(index1).GetComponent<InventorySlot_UI>();
+        ui.SetNew();
+
+        ui = GameManager.Instance.InventoryHud.transform.GetChild(index2).GetComponent<InventorySlot_UI>();
+        ui.SetNew();
     }
+
 
     void GenerateUI()
     {
-        for(int i = 0; i < inventorySize; i++)
-        {
-            if (GameManager.Instance.InventorySlotUI == null) return;
+        if (GameManager.Instance.InventorySlotUI == null) return;
 
+        for (int i = 0; i < inventorySize; i++)
+        {
             InventorySlot_UI ui = Instantiate(GameManager.Instance.InventorySlotUI, GameManager.Instance.InventoryHud.transform).GetComponent<InventorySlot_UI>();
-            if(inventoryItem[i] != null)
-            ui.Set(this, i, inventoryItem[i].Icon, inventoryItem[i].Quantity);
-            else ui.SetEmpty();
+            ui.Init(this, i);
         }
 
     }

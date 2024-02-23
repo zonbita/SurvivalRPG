@@ -12,13 +12,16 @@ public class CharacterBase : MonoBehaviour
     public FillBar healthBar;
     public Animator _animator; 
     public TextMeshProUGUI nameTMP;
-    private NavMeshAgent navMesh;
+    internal NavMeshAgent navMesh;
 
     [Header("Tầm phát hiện")]
-    public float detectRadius;
+    public float detectRadius = 10;
 
     [Header("Tốc độ di chuyển")]
     public float speed;
+
+    public Transform target;
+
     protected bool bFreeze;
     protected float attackTime;
     protected virtual void Awake()

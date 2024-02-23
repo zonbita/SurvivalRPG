@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using UnityEditor;
+using Unity.Mathematics;
 using UnityEngine;
 
 public enum EItemRarity { Common, Uncommon, Rare, Epic, Legendary, Gold }
-public enum EItemCategory { Armor, Weapon, Resource, Gold, Gem, Material, Repice, Enchantment, Consumable }
-public enum EItemID { Null, PickAxe, Hammer, Axe, Gold }
-public enum EEquipType { Helmet, Gloves, Chest, Pants, Boots, Weapon, Food, Potion, Jewels }
+public enum EItemCategory { Armor, Weapon, Tool, Resource, Gold, Gem, Material, Repice, Enchantment, Consumable }
+public enum EItemID { Null, Stick, Wood, Rock, PickAxe, Hammer, Axe, Gold, Golden_Helmet, Golden_Chestplate, Golden_Leggings, Golden_Boots }
 public enum EPlayerAction { PickUP, Chop, Dig, Mine1, Mine2, Mine3 }
+public enum EEquipType { Helmet, Chest, Gloves, Pants, Boots, Jewels, Gems, Weapon, Food, Potion }
 public abstract class ItemSO : ScriptableObject
 {
     public Sprite Icon;
@@ -16,7 +16,7 @@ public abstract class ItemSO : ScriptableObject
     [TextArea] public string Description;
     public GameObject Prefab;
 
-    public int Quantity = 0;
+
     public int MaxStack;
     public int Duration = 100;
     public List<string> Tags;
@@ -24,15 +24,8 @@ public abstract class ItemSO : ScriptableObject
     [Header("Attribute")]
     public EPlayerAction playerAction;
     public EItemCategory Category;
-    public EEquipType EquipType;
     public List<Attribute> Attributes;
 
     public abstract void Use();
-
-    private void Awake()
-    {
-        if (Prefab)
-            PrefabUtility.InstantiatePrefab(Prefab as GameObject);
-    }
 
 }

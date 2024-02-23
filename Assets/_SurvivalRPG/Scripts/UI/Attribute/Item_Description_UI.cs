@@ -1,18 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Item_Description_UI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI rarityText;
+    [SerializeField] private TextMeshProUGUI typeText;
+    [SerializeField] private TextMeshProUGUI quantityText;
+    [SerializeField] private TextMeshProUGUI descriptionText;
 }

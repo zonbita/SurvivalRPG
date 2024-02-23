@@ -9,14 +9,14 @@ public class FillBar : MonoBehaviour
         image = GetComponent<Image>();
     }
 
-    public void SetPercent(float value = 0, float maxValue = 0)
+    public void SetPercent(float value, float maxValue)
     {
         if (image == null) return;
 
-        float percent = value / maxValue;
+        float percent = Mathf.Clamp01( value / maxValue);
 
         if (percent == image.fillAmount) return;
 
-         image.fillAmount = (percent);
+         image.fillAmount = percent;
     }
 }

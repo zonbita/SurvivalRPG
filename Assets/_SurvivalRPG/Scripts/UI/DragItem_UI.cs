@@ -2,16 +2,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DragItem_UI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragItem_UI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public Image image;
+    Image image;
     [HideInInspector] public Transform RootTransform;
     Vector3 position;
-    InventorySlot_UI inventorySlot_UI;
+    public InventorySlot_UI SlotUI;
+
+    private void Awake()
+    {
+        image = GetComponent<Image>();
+        SlotUI = GetComponentInParent<InventorySlot_UI>();
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        inventorySlot_UI = GetComponentInParent<InventorySlot_UI>();
-
         RootTransform = transform.parent;
         position = this.transform.position;
         transform.SetParent(transform.root);
@@ -26,10 +31,15 @@ public class DragItem_UI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void OnEndDrag(PointerEventData eventData)
     {
+
         transform.SetParent(RootTransform);
         transform.position = position;
         eventData.Reset();
         image.raycastTarget = true;
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        
+    }
 }

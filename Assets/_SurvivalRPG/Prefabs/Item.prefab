@@ -181,7 +181,7 @@ PrefabInstance:
     - target: {fileID: 4161145143135085321, guid: a649f291570f085458d24aae40fb52ad,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4161145143135085321, guid: a649f291570f085458d24aae40fb52ad,
         type: 3}
@@ -202,6 +202,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hud_ItemName
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161145143135085327, guid: a649f291570f085458d24aae40fb52ad,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4161145143476839897, guid: a649f291570f085458d24aae40fb52ad,
         type: 3}
