@@ -12,16 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e255144a36387345b93e481f81a7745, type: 3}
   m_Name: Gold_Helmet
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: 3253ad9deab97584d9f92d6a2fad17b4, type: 3}
+  Icon: {fileID: 21300000, guid: 5c43a34aaf5811442a3197d0b97a3940, type: 3}
   ItemID: 8
   Name: Golden_Helmet
   Rarity: 3
   Description: 
   Prefab: {fileID: 6239969156481229051, guid: b71b0f8d2f881c743a85228f3030d1cb, type: 3}
+  isDrop: 1
   MaxStack: 0
   Duration: 100
   Tags: []
-  playerAction: 0
+  Action: 0
   Category: 0
   Attributes: []
+  Blueprint:
+    RequiredItems: []
+    ECraftType: 0
+    Quantity: 1
+    CraftingTime: 2
   EquipType: 0

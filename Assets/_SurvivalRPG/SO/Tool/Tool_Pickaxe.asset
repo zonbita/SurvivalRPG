@@ -12,17 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b703baeb3edb54594cdd91b92f4a86, type: 3}
   m_Name: Tool_Pickaxe
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  Icon: {fileID: 21300000, guid: ac241429df4701e40a6680eed2261e46, type: 3}
   ItemID: 1
   Name: Pick Axe
   Rarity: 0
   Description: Pick Axe
   Prefab: {fileID: 2651747729594002529, guid: fcdb12c0011022649b9ec1569d29917d, type: 3}
+  isDrop: 1
   MaxStack: 0
   Duration: 100
   Tags: []
-  playerAction: 0
+  Action: 0
   Category: 2
   Attributes:
   - attribute: 0
     Value: 2
+  Blueprint:
+    RequiredItems: []
+    ECraftType: 0
+    Quantity: 1
+    CraftingTime: 2

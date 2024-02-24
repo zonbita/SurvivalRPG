@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
-public class DragItem_UI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragItem_UI : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     Image image;
     [HideInInspector] public Transform RootTransform;
@@ -36,10 +37,5 @@ public class DragItem_UI : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         transform.position = position;
         eventData.Reset();
         image.raycastTarget = true;
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        
     }
 }

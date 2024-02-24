@@ -1,17 +1,18 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class InventorySlot_UI : MonoBehaviour, IDropHandler
+public class InventorySlot_UI : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
     [SerializeField] Image imageItem;
     [SerializeField] TMP_Text Quantitytext;
     [SerializeField] DragItem_UI dragItem;
     [SerializeField] public InventoryManager inv;
     [HideInInspector] public int slot = -1;
-
+    public Action<int> OnClick;
 
     public void Init(InventoryManager inv, int slot)
     {
@@ -94,5 +95,10 @@ public class InventorySlot_UI : MonoBehaviour, IDropHandler
         {
             inv.SwitchItem(drag.SlotUI.slot, slot);
         }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(slot != -1) OnClick(slot);
     }
 }

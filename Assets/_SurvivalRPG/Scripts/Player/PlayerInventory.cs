@@ -49,6 +49,25 @@ public class PlayerInventory : InventoryManager
         {
             InventorySlot_UI ui = Instantiate(GameManager.Instance.InventorySlotUI, GameManager.Instance.InventoryHud.transform).GetComponent<InventorySlot_UI>();
             ui.Init(this, i);
+            ui.OnClick += OnClick;
+        }
+
+    }
+
+    private void OnClick(int slot)
+    {
+        if (inventoryItem[slot].Data == null)
+        {
+            GameManager.Instance.DropBtn.interactable = false;
+            GameManager.Instance.EquipBtn.interactable = false;
+            GameManager.Instance.UseBtn.interactable = false;
+        }
+        else
+        {
+            //GameManager.Instance.EquipBtn.interactable = inventoryItem[slot].Data = true ? true : false;
+            GameManager.Instance.DropBtn.interactable = inventoryItem[slot].Data.isDrop = true ? true : false;
+            //GameManager.Instance.DropBtn.interactable = inventoryItem[slot].Data.isDrop = true ? true : false;
+
         }
 
     }

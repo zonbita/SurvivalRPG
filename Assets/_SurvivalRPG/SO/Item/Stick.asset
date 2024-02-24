@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a5d8f99e9161e45807cb86936bdca3, type: 3}
+  m_Name: Stick
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: 4f8e653bf1c0b054680c13a05741c202, type: 3}
+  ItemID: 1
+  Name: Stick
+  Rarity: 0
+  Description: 
+  Prefab: {fileID: 1493958779012120596, guid: b9de24523a11d714db3851b5f0f9d527, type: 3}
+  MaxStack: 0
+  Duration: 100
+  Tags: []
+  playerAction: 0
+  Category: 3
+  Attributes: []
+  RequiredItems:
+    Quantity: 1
+    eCraftType: 0
+    requiredItems: []

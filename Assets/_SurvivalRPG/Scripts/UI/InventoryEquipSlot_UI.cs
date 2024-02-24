@@ -14,14 +14,14 @@ public class InventoryEquipSlot_UI : MonoBehaviour, IDropHandler, IPointerClickH
     [SerializeField] TMP_Text Quantitytext;
     [SerializeField] DragItem_UI dragItem;
     public EEquipType equipType;
-    public System.Action<Equip> OnChangeEquipSlot;
+
     int slot = -1;
 
-    private void OnValidate()
+    public Action<EEquipType> OnRightClickEvent;
+    internal void AssignAction()
     {
-      
-    }
 
+    }
 
 
     private void Awake()
@@ -65,13 +65,13 @@ public class InventoryEquipSlot_UI : MonoBehaviour, IDropHandler, IPointerClickH
         bool b = drag.SlotUI.inv.SwitchEquipItem(drag.SlotUI.slot, equipType);
         if (b)
         {
-            //OnChangeEquipSlot?.Invoke();
+            OnRightClickEvent?.Invoke(equipType);
         }
-        
+
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        
+        OnRightClickEvent?.Invoke(equipType);
     }
 }

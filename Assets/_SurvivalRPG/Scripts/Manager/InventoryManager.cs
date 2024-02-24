@@ -2,6 +2,7 @@ using AYellowpaper.SerializedCollections;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -20,7 +21,7 @@ public class InventoryManager : MonoBehaviour
     public InventoryItem[] InventoryItem => inventoryItem;
     public int inventorySize => InventoryItem.Length;
 
-    //bool isFull = false;
+    private bool isFull => inventoryItem.Where(x => x.Data == null).Any() == false;
 
     // Event
     public System.Action<InventoryManager,int> OnInventoryChangeSlot;
@@ -45,18 +46,8 @@ public class InventoryManager : MonoBehaviour
         OnInit?.Invoke();
     }
 
-    public bool CheckFull()
-    {
-        foreach (InventoryItem item in inventoryItem)
-        {
-            if (item.Quantity < item.Data.MaxStack) return false;
-        }
-        return true;
-    }
-
     public int GetEmptySlot()
     {
-
         for (int i = 0; i < inventoryItem.Length - 1; i++)
         {
             if (inventoryItem[i].Data == null) return i;
@@ -89,14 +80,39 @@ public class InventoryManager : MonoBehaviour
 
     public void Add(ItemSO item, int quantity)
     {
-        if (item.ItemID == EItemID.Null) return;
+        if (item.ItemID == EItemID.Null || isFull) return;
 
-        int index = GetEmptySlot();
-
-        if (index != -1)
+        
+        if (item.MaxStack > 0)
         {
+            while (quantity > 0 && !isFull)
+            {
+                for (int i = 0; i < inventoryItem.Length - 1; i++)
+                {
+                    if (inventoryItem[i].Data.ItemID == item.ItemID)
+                    {
+                        int total = quantity + inventoryItem[i].Quantity;
+                        if (total > item.MaxStack)
+                        {
+                            inventoryItem[i].Quantity = item.MaxStack;
+                            quantity = total - item.MaxStack;
+                        }
+                        else
+                            inventoryItem[i].Quantity += quantity;
+                    }
+                }
+            }
+        }
+        else
+        {
+            int index = GetEmptySlot();
             inventoryItem[index].Data = item;
-            inventoryItem[index].Quantity = quantity;
+            inventoryItem[index].Quantity = inventoryItem[index].Data.Category == EItemCategory.Armor ||
+                                            inventoryItem[index].Data.Category == EItemCategory.Weapon ||
+                                            inventoryItem[index].Data.Category == EItemCategory.Tool ||
+                                            inventoryItem[index].Data.Category == EItemCategory.Repice
+                                            ? 0 : quantity;
+
             OnInventoryChangeSlot?.Invoke(this, index);
         }
     }
@@ -147,16 +163,22 @@ public class InventoryManager : MonoBehaviour
     {
         if (inventoryItem[index1].Data == null) return false;
 
-        Equip ne = EquipManager.Instance.Equipment((Equip)inventoryItem[index1].Data, t);
-        if ( ne != null)
+        EquipManager.Instance.OnChangeEquipSlot((Equip)inventoryItem[index1].Data);
+        Equip EQ = EquipManager.Instance.Equipment((Equip)inventoryItem[index1].Data, t);
+        if (EQ != null)
         {
-            inventoryItem[index1].Data = ne;
+            inventoryItem[index1].Data = EQ;
+            
         }
         else
         {
             inventoryItem[index1].Data = null;
         }
+
         OnInventoryChangeSlot?.Invoke(this, index1);
+
+       
+
         return true;
     }
 
@@ -165,5 +187,10 @@ public class InventoryManager : MonoBehaviour
         InventoryItem i = inventoryItem[index1];
         inventoryItem[index1] = inventoryItem[index2];
         inventoryItem[index2] = i;
+    }
+
+    public int GetQuantityTotal(EItemID EItemID)
+    {
+        return inventoryItem.Sum(x => x.Data.ItemID == EItemID ? x.Quantity : 0);
     }
 }

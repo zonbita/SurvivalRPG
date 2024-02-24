@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,6 +13,12 @@ public class Item : ItemSO
     }
 
     public override void Use()
+    {
+        
+    }
+
+
+    public void RemoveFromInventory()
     {
         
     }

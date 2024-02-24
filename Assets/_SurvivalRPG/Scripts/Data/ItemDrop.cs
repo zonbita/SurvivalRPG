@@ -12,7 +12,7 @@ public  class ItemDrop : MonoBehaviour, IAction
     CapsuleCollider capsule;
     NameHud_UI UI;
 
-    EPlayerAction playerAction = EPlayerAction.PickUP;
+    EPlayerAction Action = EPlayerAction.PickUP;
 
     private void Awake()
     {
@@ -24,7 +24,7 @@ public  class ItemDrop : MonoBehaviour, IAction
         UI = GetComponent<NameHud_UI>();
         
         capsule.isTrigger = true;
-        playerAction = itemSO.playerAction;
+        Action = itemSO.Action;
 
         //quantity = quantity > itemSO.MaxStack ? itemSO.MaxStack : quantity;
 
@@ -35,34 +35,12 @@ public  class ItemDrop : MonoBehaviour, IAction
     {
         this.itemSO = item;
         this.quantity = Quantity > item.MaxStack ? item.MaxStack : Quantity;
-        this.playerAction = item.playerAction;
+        this.Action = item.Action;
     }
 
     void SetNameAndColor()
     {
-        string color = "white";
-
-        switch (ItemSO.Rarity)
-        {
-            case EItemRarity.Gold:
-                color = "yellow";
-                break;
-            case EItemRarity.Uncommon:
-                color = "white";
-                break;
-            case EItemRarity.Common:
-                color = "aqua";
-                break;
-            case EItemRarity.Rare:
-                color = "Orange";
-                break;
-            case EItemRarity.Epic:
-                color = "purple";
-                break;
-            case EItemRarity.Legendary:
-                color = "red";
-                break;
-        }
+        string color = GlobalVar.GetRarityColor(itemSO.Rarity);
         string format;
 
         if (itemSO.Category == EItemCategory.Consumable || itemSO.Category == EItemCategory.Material || itemSO.Category == EItemCategory.Resource || itemSO.Category == EItemCategory.Gold)
@@ -101,7 +79,7 @@ public  class ItemDrop : MonoBehaviour, IAction
 
     public EPlayerAction GetPlayerAction()
     {
-        return playerAction;
+        return Action;
     }
     private void OnDestroy()
     {

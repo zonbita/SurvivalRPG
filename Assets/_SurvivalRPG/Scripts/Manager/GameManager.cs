@@ -7,6 +7,7 @@ using System.Collections;
 
 [RequireComponent(typeof(AttributeManager))]
 [RequireComponent(typeof(EquipManager))]
+[RequireComponent(typeof(CraftManager))]
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -45,6 +46,10 @@ public class GameManager : MonoBehaviour
     [Header("----------------[ Button ]---------------")]
     public Button PickupBtn;
     public Button AttackBtn;
+
+    public Button EquipBtn;
+    public Button DropBtn;
+    public Button UseBtn;
 
     int currentExp = 0;
     int currentLevel = 1;
