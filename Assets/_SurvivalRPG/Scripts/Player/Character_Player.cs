@@ -24,10 +24,18 @@ public class Character_Player : CharacterBase
     [Header("Equipment")]
     public Transform headTransform;
     public Transform chestTransform;
-    public Transform legsTransform;
-    public Transform feetTransform;
+    public Transform PantsTransform;
+    public Transform BootsTransform;
     public Transform rightHandTransform;
     public Transform leftHandTransform;
+
+    Dictionary<EEquipType, GameObject> AttachList = new();
+
+    [Header("Gameobject Equipment")]
+    public GameObject Head;
+    public GameObject Chest;
+    public GameObject Pants;
+    public GameObject Boots;
 
     CinemachineVirtualCamera virtualCamera;
     protected override void Awake()
@@ -45,6 +53,8 @@ public class Character_Player : CharacterBase
     }
     void Start()
     {
+        InitAttach();
+
         virtualCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CinemachineVirtualCamera>();
         virtualCamera.Follow = this.transform;
        
@@ -83,5 +93,57 @@ public class Character_Player : CharacterBase
        
     }
 
+    public void InitAttach()
+    {
+        AttachList.Add(EEquipType.Helmet, Head);
+        AttachList.Add(EEquipType.Chest, Chest);
+        AttachList.Add(EEquipType.Pants, Pants);
+        AttachList.Add(EEquipType.Boots, Boots);
+        AttachList.Add(EEquipType.Weapon, null);
+    }
+
+    public void Attach(EEquipType type, GameObject Prefab)
+    {
+        if (AttachList.ContainsKey(type))
+        {
+
+
+            if (type == EEquipType.Helmet || type == EEquipType.Chest || type == EEquipType.Pants || type == EEquipType.Boots)
+            {
+                AttachList[type].SetActive(true);
+            }
+            else
+            {
+                if (AttachList[type] != null)
+                {
+                    Destroy(AttachList[type].gameObject);
+                }
+
+                Transform t = headTransform;
+                switch (type)
+                {
+                    case EEquipType.Helmet:
+                        t = headTransform;
+                        break;
+                    case EEquipType.Chest:
+                        t = chestTransform;
+                        break;
+                    case EEquipType.Pants:
+                        t = PantsTransform;
+                        break;
+                    case EEquipType.Boots:
+                        t = BootsTransform;
+                        break;
+                    case EEquipType.Weapon:
+                        t = leftHandTransform;
+                        break;
+                }
+                GameObject go = Instantiate(Prefab, t);
+                go.transform.localPosition = Vector3.zero;
+                AttachList[type] = go;
+            }
+
+        }
+    }
 }
 

@@ -11,6 +11,7 @@ public class InventoryEquipSlot_UI : MonoBehaviour, IDropHandler, IPointerClickH
     public System.Action<int, Image, int> OnSlotData;
 
     [SerializeField] Image imageItem;
+    [SerializeField] Image imageBG;
     [SerializeField] TMP_Text Quantitytext;
     [SerializeField] DragItem_UI dragItem;
     public EEquipType equipType;
@@ -18,16 +19,19 @@ public class InventoryEquipSlot_UI : MonoBehaviour, IDropHandler, IPointerClickH
     int slot = -1;
 
     public Action<EEquipType> OnRightClickEvent;
-    internal void AssignAction()
-    {
 
-    }
-
+    public Action<Equip> OnChangeEquipSlot;
 
     private void Awake()
     {
-        if(EquipManager.Instance.imageList[(int)equipType] != null)
-        imageItem.sprite = EquipManager.Instance.imageList[(int)equipType];
+        if (EquipManager.Instance.imageList[(int)equipType] != null)
+            imageBG.sprite = EquipManager.Instance.imageList[(int)equipType];
+    }
+
+    public void OnChangeEquip(Equip equip)
+    {
+        SetImage(equip.Icon);
+        SetQuantity(0);
     }
 
     public void Init(int slot, int quantity)
@@ -49,6 +53,21 @@ public class InventoryEquipSlot_UI : MonoBehaviour, IDropHandler, IPointerClickH
 
     }
 
+    void SetImage(Sprite imageItem)
+    {
+        if (imageItem != null)
+        {
+            this.imageItem.enabled = true;
+            this.imageItem.overrideSprite = imageItem;
+        }
+        else
+        {
+            this.imageItem.enabled = false;
+        }
+
+    }
+
+
     void SetQuantity(int quantity)
     {
         Quantitytext.enabled = (quantity < 1 ? false : true);
@@ -65,7 +84,7 @@ public class InventoryEquipSlot_UI : MonoBehaviour, IDropHandler, IPointerClickH
         bool b = drag.SlotUI.inv.SwitchEquipItem(drag.SlotUI.slot, equipType);
         if (b)
         {
-            OnRightClickEvent?.Invoke(equipType);
+
         }
 
     }

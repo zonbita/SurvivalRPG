@@ -15,21 +15,21 @@ public class ItemDescription_UI : MonoBehaviour
     {
         imageItem.sprite = item.Icon;
         imageItem.enabled = true;
-        text.text = $"<color={GlobalVar.GetRarityColor(item.Rarity)}>{item.name}</color>" + "\nCrafting Time: " + item.Duration + "\n" + "Category: " + item.Category;
+        text.text = $"<color={GlobalVar.GetRarityColor(item.Rarity)}>{item.Name}</color>" + "\nCrafting Time: " + item.Duration + "\n" + "Category: " + item.Category;
         Destext.text = SetDescription(item);
         SetRequirementSlots(item);
     }
 
     public string SetDescription(ItemSO item)
     {
-        string format = item.Description + "\n"
-            +  "\n\n\n" 
-            + "<color=#87CEFA>ATTRIBUTE:</color>" + "\n"
+        string format = item.Description
+            +  "\n\n" 
+            + "<color=#87CEFA>ATTRIBUTE</color>" + "\n"
             ;
 
         foreach (Attribute a in item.Attributes)
         {
-            format += string.Format("  <color={0}>{1}:</color> <color=white>{2}</color>\n", GlobalVar.GetAttributeColor(a.attribute), a.attribute, a.Value);
+            format += string.Format("  <color={0}>{1}:</color> <color=white>{2}</color>\n", GlobalVar.GetAttributeColor(a.Name), a.Name, a.Value);
         }
         return format;
     }

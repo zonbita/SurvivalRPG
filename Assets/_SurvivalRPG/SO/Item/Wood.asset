@@ -13,18 +13,20 @@ MonoBehaviour:
   m_Name: Wood
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 5343b7115bd89c64982db3f2216a0c0f, type: 3}
-  ItemID: 2
+  ItemID: 3
   Name: Wood
   Rarity: 0
   Description: 
   Prefab: {fileID: 108507113624723981, guid: eebb56c82efbd8d4bb0eb6bd925a0e9d, type: 3}
+  isDrop: 1
   MaxStack: 0
   Duration: 100
   Tags: []
-  playerAction: 0
+  Action: 0
   Category: 3
   Attributes: []
-  RequiredItems:
-    Quantity: 0
-    eCraftType: 0
-    requiredItems: []
+  Blueprint:
+    RequiredItems: []
+    ECraftType: 0
+    Quantity: 1
+    CraftingTime: 2

@@ -3,29 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Attribute))]
-[RequireComponent (typeof(Movement))]
+
+[RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(CharacterCombat))]
-[RequireComponent(typeof(CharacterStats))]
+
 public class EnemyController : CharacterBase
 {
-    Attribute attribute;
+    [SerializeField] internal List<Attribute> attributes;
     Movement movement;
     Vector3 Target;
     CharacterCombat characterCombat;
-    CharacterStats characterStats;
     void Start()
     {
-        attribute = GetComponent<Attribute>();
-        movement = GetComponent<Movement>();
         characterCombat = GetComponent<CharacterCombat>();
-        characterStats = GetComponent<CharacterStats>();
     }
 
 
     void Update()
     {
-        if (characterStats.currentHealth <= 0)
+        if (characterCombat.stats.currentHealth <= 0)
             return;
 
         target = GameManager.Instance.Player.transform;

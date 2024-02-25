@@ -17,9 +17,6 @@ public class CharacterBase : MonoBehaviour
     [Header("Tầm phát hiện")]
     public float detectRadius = 10;
 
-    [Header("Tốc độ di chuyển")]
-    public float speed;
-
     public Transform target;
 
     protected bool bFreeze;

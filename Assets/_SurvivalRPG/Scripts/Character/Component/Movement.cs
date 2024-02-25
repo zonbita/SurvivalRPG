@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public Vector3 moveInput;
-    public bool IsMoving { get; private set; }
-    public bool IsRunning;
+    internal Vector3 moveInput;
+    internal bool IsMoving { get; private set; }
+    internal bool IsRunning;
     [HideInInspector] protected Rigidbody rb;
 
     [Space][Header("Walking & Running")][SerializeField]
@@ -15,7 +15,7 @@ public class Movement : MonoBehaviour
 
     protected Animator _animator;
 
-    public Vector2 _vector2;
+    internal Vector2 _vector2;
 
     protected virtual void Awake()
     {

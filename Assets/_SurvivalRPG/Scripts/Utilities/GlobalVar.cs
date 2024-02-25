@@ -74,7 +74,7 @@ public static class GlobalVar
                 s = "#FFFACD";
                 break;
             case EItemRarity.Rare:
-                s = "Orange";
+                s = "orange";
                 break;
             case EItemRarity.Epic:
                 s = "#5F9EA0";

@@ -82,15 +82,15 @@ public class PlayerInventory : InventoryManager
             switch (button)
             {
                 case EClickPlayerInventoryButton.Use:
-                    inventoryItem[SelectSlot].Data.ConsumableFromInventory += ConsumableFromInventory;
+                    if(inventoryItem[SelectSlot].Data.ConsumableFromInventory == null) inventoryItem[SelectSlot].Data.ConsumableFromInventory += ConsumableFromInventory;
                     inventoryItem[SelectSlot].Data.Use();
+                    if (inventoryItem[SelectSlot].Data.ConsumableFromInventory != null) inventoryItem[SelectSlot].Data.ConsumableFromInventory -= ConsumableFromInventory;
                     break;
                 case EClickPlayerInventoryButton.Equip:
-
-                    inventoryItem[SelectSlot].Data.Use();
+                    inventoryItem[SelectSlot].Data.EquipSlot(SelectSlot);
                     break;
                 case EClickPlayerInventoryButton.Drop:
-                    inventoryItem[SelectSlot].Data.RemoveFromInventory += RemoveFromInventory;
+                    if (inventoryItem[SelectSlot].Data.RemoveFromInventory == null) inventoryItem[SelectSlot].Data.RemoveFromInventory += RemoveFromInventory;
                     SpawnItemManager.Instance.SpawnAItem(inventoryItem[SelectSlot].Data, inventoryItem[SelectSlot].Quantity, this.transform.position + new Vector3(0,0,1));
                     inventoryItem[SelectSlot].Data.RemoveFromInventory();
                     break;
@@ -111,8 +111,10 @@ public class PlayerInventory : InventoryManager
 
     private void ConsumableFromInventory()
     {
+        if (inventoryItem[SelectSlot].Data == null) return;
+
         if(inventoryItem[SelectSlot].Data.MaxStack > 0)
-        {
+        { 
             inventoryItem[SelectSlot].Quantity -= 1;
             if (inventoryItem[SelectSlot].Quantity == 0) inventoryItem[SelectSlot].Empty();
         }

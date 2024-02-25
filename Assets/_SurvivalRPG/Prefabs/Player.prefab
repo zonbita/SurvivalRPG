@@ -64,7 +64,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 0
   m_ImplicitTensor: 0
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
@@ -111,33 +111,33 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   attributes:
-  - attribute: 0
+  - Name: 0
     Value: 5
-  - attribute: 4
+  - Name: 1
     Value: 1
-  - attribute: 1
+  - Name: 2
     Value: 1
-  - attribute: 2
+  - Name: 3
+    Value: 1
+  - Name: 4
     Value: 0
-  - attribute: 3
+  - Name: 5
     Value: 0
-  - attribute: 5
+  - Name: 6
     Value: 0
-  - attribute: 6
+  - Name: 7
     Value: 0
-  - attribute: 7
+  - Name: 8
     Value: 0
-  - attribute: 8
+  - Name: 9
     Value: 0
-  - attribute: 9
+  - Name: 11
     Value: 0
-  - attribute: 11
+  - Name: 12
     Value: 0
-  - attribute: 12
+  - Name: 13
     Value: 0
-  - attribute: 13
-    Value: 0
-  - attribute: 14
+  - Name: 14
     Value: 0
   maxHunger: 100
   maxThirsty: 100
@@ -196,14 +196,17 @@ MonoBehaviour:
   _animator: {fileID: 267273475395558710}
   nameTMP: {fileID: 0}
   detectRadius: 0
-  speed: 6
   target: {fileID: 0}
-  headTransform: {fileID: 1151724230302660680}
+  headTransform: {fileID: 8310186677976931057}
   chestTransform: {fileID: 3996038954805802532}
-  legsTransform: {fileID: 1274761331918221958}
-  feetTransform: {fileID: 6047571525537074423}
-  rightHandTransform: {fileID: 735961059706221950}
-  leftHandTransform: {fileID: 735961059706221950}
+  PantsTransform: {fileID: 991057371195418298}
+  BootsTransform: {fileID: 8295780689226127600}
+  rightHandTransform: {fileID: 762975470078134299}
+  leftHandTransform: {fileID: 762975470078134299}
+  Head: {fileID: 1118951326486228551}
+  Chest: {fileID: 5976869344527480260}
+  Pants: {fileID: 6512692443172076169}
+  Boots: {fileID: 6829036028977816351}
 --- !u!114 &1617663433125350246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +219,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c5e00ed4e9acba48abb5b2461fb25db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryItem: []
+  SelectSlot: -1
 --- !u!195 &3645044219199029420
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -250,10 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18502cf16b79a5344a1c2dbaeafbc608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveInput: {x: 0, y: 0, z: 0}
-  IsRunning: 0
-  _walkSpeed: 3
-  _vector2: {x: 0, y: 0}
+  _walkSpeed: 6
 --- !u!114 &8256034430802559367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -973,21 +975,21 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 4375152442368776858}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &735961059706221950 stripped
+--- !u!4 &762975470078134299 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 3927421827543855076, guid: 60770bdb4dc667c45bea53db0339dc05,
+  m_CorrespondingSourceObject: {fileID: 3900411753007862401, guid: 60770bdb4dc667c45bea53db0339dc05,
     type: 3}
   m_PrefabInstance: {fileID: 4375152442368776858}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1151724230302660680 stripped
+--- !u!4 &991057371195418298 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 3696354557974323922, guid: 60770bdb4dc667c45bea53db0339dc05,
+  m_CorrespondingSourceObject: {fileID: 3564415051214388256, guid: 60770bdb4dc667c45bea53db0339dc05,
     type: 3}
   m_PrefabInstance: {fileID: 4375152442368776858}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1274761331918221958 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3244691087426676764, guid: 60770bdb4dc667c45bea53db0339dc05,
+--- !u!1 &1118951326486228551 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3688722674990396637, guid: 60770bdb4dc667c45bea53db0339dc05,
     type: 3}
   m_PrefabInstance: {fileID: 4375152442368776858}
   m_PrefabAsset: {fileID: 0}
@@ -1003,9 +1005,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4375152442368776858}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6047571525537074423 stripped
+--- !u!1 &5976869344527480260 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7945953894594096990, guid: 60770bdb4dc667c45bea53db0339dc05,
+    type: 3}
+  m_PrefabInstance: {fileID: 4375152442368776858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6512692443172076169 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7410130793860079635, guid: 60770bdb4dc667c45bea53db0339dc05,
+    type: 3}
+  m_PrefabInstance: {fileID: 4375152442368776858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6829036028977816351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7093791603881671045, guid: 60770bdb4dc667c45bea53db0339dc05,
+    type: 3}
+  m_PrefabInstance: {fileID: 4375152442368776858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8295780689226127600 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8023976056550938221, guid: 60770bdb4dc667c45bea53db0339dc05,
+  m_CorrespondingSourceObject: {fileID: 5735089356449546858, guid: 60770bdb4dc667c45bea53db0339dc05,
+    type: 3}
+  m_PrefabInstance: {fileID: 4375152442368776858}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8310186677976931057 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5756760541019062379, guid: 60770bdb4dc667c45bea53db0339dc05,
     type: 3}
   m_PrefabInstance: {fileID: 4375152442368776858}
   m_PrefabAsset: {fileID: 0}

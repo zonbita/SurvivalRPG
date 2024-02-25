@@ -16,6 +16,9 @@ public class AttributeManager : Singleton<AttributeManager>
 
     [SerializeField] TMP_Text PlayerAttributeText;
     public static Action OnInit;
+
+    AttributeTotal EquipmentAttributeTotal = new();
+
     private void Awake()
     {
         OnInit += Init;
@@ -25,22 +28,59 @@ public class AttributeManager : Singleton<AttributeManager>
         
     }
 
+    /// <summary>
+    /// Update Player All Attribute
+    /// </summary>
     public void UpdatePlayerAttribute()
     {
-        if(Character_Player.Instance.playerStats == null) return;
+        EquipmentAttributeTotal = CalAttributeTotal(EquipManager.Instance.GetEquipList);
+/*        if(EquipmentAttributeTotal != null )
+        {
+            foreach (var a in EquipmentAttributeTotal.attributes)
+            {
+                print(a.Key.ToString() + " " + a.Value.ToString());
+            }
+        }*/
 
-        UpdatePlayerAttributeUI();
+        if (Character_Player.Instance.playerStats != null) UpdatePlayerAttributeUI();
     }
+
 
     void UpdatePlayerAttributeUI()
     {
+
         string format = "";
         foreach (Attribute att in Character_Player.Instance.playerStats.attributes)
         {
-            format += string.Format("<color={0}>{1}</color>: <color=white>{2}</color>\n", GlobalVar.GetAttributeColor(att.attribute), att.attribute.ToString(), att.Value);
+            float total = EquipmentAttributeTotal != null ? EquipmentAttributeTotal.Get_A_AttributeTotal(att) : 0;
+            format += string.Format("<color={0}>{1}</color>: <color=white>{2}</color> + ({3})\n", 
+                GlobalVar.GetAttributeColor(att.Name), 
+                att.Name.ToString(), 
+                att.Value,
+                total
+                );
+            print(total);
         }
         PlayerAttributeText.text = format;
     }
+    
+    public AttributeTotal CalAttributeTotal(Item[] itemList)
+    {
+        if(itemList.Length > 0)
+        {
+            AttributeTotal AT = new();
 
+            foreach (Item item in itemList)
+            {
+                foreach (Attribute a in item.Attributes)
+                {
+                    AT.Add(a);
+                }
+            }
+            return AT;
+        }
+
+        return null;
+    }
  
 }

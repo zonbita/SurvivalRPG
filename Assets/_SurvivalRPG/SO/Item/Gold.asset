@@ -12,17 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b703baeb3edb54594cdd91b92f4a86, type: 3}
   m_Name: Gold
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
-  ItemID: 4
+  Icon: {fileID: 21300000, guid: fc9d7ac77b80e424d9c6d2890f9af52b, type: 3}
+  ItemID: 10
   Name: Gold
   Rarity: 5
   Description: '{1} <color = "Yellow">Gold</>'
   Prefab: {fileID: 1950871307682000, guid: 01348926c7cbb3347a006c37204131c3, type: 3}
-  Quantity: 0
+  isDrop: 1
   MaxStack: 0
   Duration: 100
   Tags: []
-  playerAction: 0
+  Action: 0
   Category: 3
-  EquipType: 0
   Attributes: []
+  Blueprint:
+    RequiredItems: []
+    ECraftType: 0
+    Quantity: 1
+    CraftingTime: 2

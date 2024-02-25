@@ -1,23 +1,63 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+
+[System.Serializable]
+public struct EquipContainer
+{
+    public EEquipType EquipType;
+    public Equip Data;
+}
 
 public class EquipManager : Singleton<EquipManager>
 {
     public Sprite[] imageList;
-    public Dictionary<EEquipType, Equip> slots = new Dictionary<EEquipType, Equip>();
-    
-    internal List<Attribute> EquipAttributes;
     [SerializeField] List<InventoryEquipSlot_UI> InventoryEquipSlot_UIs;
 
-    public System.Action<Equip> OnChangeEquipSlot;
+    internal List<Attribute> EquipAttributes;
+
+    [SerializeField] private EquipContainer[] equipmentSlots = new EquipContainer[10];
+
+    public EquipContainer[] EquipmentSlots
+    {
+        get
+        {
+            return equipmentSlots;
+        }
+    }
+
+    /// <summary>
+    /// Get Equipment Item List
+    /// </summary>
+    /// <returns></returns>
+    public Equip[] GetEquipList
+    {
+        get
+        {
+            if(equipmentSlots.Length > 0)
+            {
+                List<Equip> equipList = new List<Equip>();
+
+                foreach (EquipContainer equipContainer in equipmentSlots)
+                {
+                    if (equipContainer.Data != null)
+                    {
+                        equipList.Add(equipContainer.Data);
+                    }
+                }
+
+                return equipList.ToArray();
+            }
+            else return null;
+        }
+    }
 
     private void Awake()
     {
         foreach(EEquipType type in Enum.GetValues(typeof(EEquipType)))
         {
-            slots.Add(type, null); // Add EquipSlots
-
             foreach(InventoryEquipSlot_UI slot in InventoryEquipSlot_UIs)
             {
                 if (slot.equipType == type) {
@@ -25,33 +65,55 @@ public class EquipManager : Singleton<EquipManager>
                 } 
             }
         }
+
+        for(int i = 0; i < 10; i++)
+        {
+            EquipContainer equipContainer = new EquipContainer
+            {
+                EquipType = (EEquipType)i,
+                Data = null
+            };
+
+            // Add 
+            equipmentSlots[i] = equipContainer;
+        }
     }
 
     private void OnRightClickEvent(EEquipType type)
     {
         print(type);
+
     }
 
-    internal Equip Equipment(Equip item, EEquipType t)
+    internal bool Equipment(Equip item, out Equip outitem)
     {
-        foreach (KeyValuePair<EEquipType, Equip> k in slots)
+        for (int i = 0; i < 10; i++)
         {
-            if(k.Key == t )
+            if (EquipmentSlots[i].EquipType == item.EquipType )
             {
-                if (k.Value != null)
+                
+                if(EquipmentSlots[i].Data != null)
                 {
-                    Equip e = k.Value;
-                    slots[t] = item;
-                    return e;
+                    outitem = EquipmentSlots[i].Data;
+                    EquipmentSlots[i].Data = item;
                 }
                 else
                 {
-                    slots[t] = item;
-                    return null;
+                    outitem = null;
+                    EquipmentSlots[i].Data = item;
                 }
 
+                
+                AttributeManager.Instance.UpdatePlayerAttribute();
+                Character_Player.Instance.Attach(item.EquipType, item.Prefab);
+                InventoryEquipSlot_UIs[i].OnChangeEquip(item);
+                //AttributeManager.Instance.CalAttributeTotal(new Item[] { equipmentSlots[i].Data });
+
+                return true;
             }
         }
-        return null;
+
+        outitem = null;
+        return false;
     }
 }

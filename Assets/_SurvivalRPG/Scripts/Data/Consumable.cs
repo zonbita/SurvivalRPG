@@ -27,7 +27,13 @@ public class Consumable : Item
        
         Debug.Log(name + " consumed!");
 
-        ConsumableFromInventory?.Invoke();
+        if (this.ConsumableFromInventory == null)
+        {
+            this.ConsumableFromInventory?.Invoke();
+            return;
+        }
+
+        this.ConsumableFromInventory.Invoke();
     }
 
 }

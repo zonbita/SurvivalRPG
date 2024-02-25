@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Tool_Hammer
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 9895f5f95566ceb47bb239149d90cb44, type: 3}
-  ItemID: 2
+  ItemID: 8
   Name: Hammer
   Rarity: 1
-  Description: Pick Axe
+  Description: A blacksmith's favorite weapon
   Prefab: {fileID: 1131926571834917158, guid: 12137e5a4f0f13d45b921a301983726b, type: 3}
   isDrop: 1
   MaxStack: 0
@@ -25,10 +25,8 @@ MonoBehaviour:
   Action: 0
   Category: 2
   Attributes:
-  - attribute: 0
-    Value: 3
-  - attribute: 7
-    Value: 1
+  - Name: 0
+    Value: 4
   Blueprint:
     RequiredItems:
     - item: {fileID: 11400000, guid: 646b324f2cf2a904b9e983957bb18c83, type: 2}

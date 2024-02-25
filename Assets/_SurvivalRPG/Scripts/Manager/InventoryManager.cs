@@ -39,6 +39,7 @@ public class InventoryManager : MonoBehaviour
     public System.Action<InventoryManager, int, int> OnInventoryChange2Slot;
     public Action OnInit;
 
+
     public virtual void InitInventory(int size, ItemSO[] item, int quantity)
     {
 
@@ -88,9 +89,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-
-
-    
 
     public void Add(ItemSO item, int quantity)
     {
@@ -183,7 +181,8 @@ public class InventoryManager : MonoBehaviour
                 }
                 else // ItemID = ItemID
                 {
-                    if (inventoryItem[index1].Data.MaxStack == 0) // Single Item 
+                    int MaxStack = inventoryItem[index1].Data.MaxStack;
+                    if (inventoryItem[index1].Data.MaxStack == 0 || inventoryItem[index1].Quantity == MaxStack || inventoryItem[index2].Quantity == MaxStack) // Single Item 
                     {
                         SwapItems(index1, index2);
                     }
@@ -216,22 +215,22 @@ public class InventoryManager : MonoBehaviour
     {
         if (inventoryItem[index1].Data == null || !(inventoryItem[index1].Data as Equip)) return false;
 
-        EquipManager.Instance.OnChangeEquipSlot((Equip)inventoryItem[index1].Data);
-        Equip EQ = EquipManager.Instance.Equipment((Equip)inventoryItem[index1].Data, t);
-        if (EQ != null)
+
+        bool b = EquipManager.Instance.Equipment((Equip)inventoryItem[index1].Data, out Equip outitem);
+        if (b)
         {
-            inventoryItem[index1].Data = EQ;
-            
+            if (outitem)
+            {
+                inventoryItem[index1].Data = outitem;
+                OnInventoryChangeSlot?.Invoke(this, index1);
+            }
+            else
+            {
+                inventoryItem[index1].Data = null;
+                OnInventoryChangeSlot?.Invoke(this, index1);
+            }
+
         }
-        else
-        {
-            inventoryItem[index1].Data = null;
-        }
-
-        OnInventoryChangeSlot?.Invoke(this, index1);
-
-       
-
         return true;
     }
 

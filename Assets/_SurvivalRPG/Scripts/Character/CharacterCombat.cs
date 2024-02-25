@@ -15,7 +15,7 @@ public class CharacterCombat : MonoBehaviour
     public event System.Action OnNormal;
     public event System.Action OnDeath;
 
-    CharacterStats stats;
+    internal CharacterStats stats;
     CharacterStats enemyStats;
 
     public Slider healthSlider;

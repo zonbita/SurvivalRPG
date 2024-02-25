@@ -31,5 +31,5 @@ MonoBehaviour:
     Quantity: 1
     CraftingTime: 2
   healthGain: 2
-  hungerGain: 10
-  thirstyGain: 10
+  hungerGain: 20
+  thirstyGain: 15
