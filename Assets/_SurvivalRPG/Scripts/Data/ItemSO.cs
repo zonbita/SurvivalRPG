@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public enum EItemRarity { Common, Uncommon, Rare, Epic, Legendary, Gold }
 public enum EItemCategory { Armor, Weapon, Tool, Resource, Gold, Gem, Material, Repice, Enchantment, Consumable }
 public enum EItemID { Null, Stone, Stick, Wood, Copper_Ore, Gold_Ore, Iron_Ore, Stone_PickAxe, 
-    Stone_Hammer, Stone_Axe, Gold, Golden_Helmet, Golden_Chestplate, Golden_Leggings, Golden_Boots }
+    Stone_Hammer, Stone_Axe, Gold, Golden_Helmet, Golden_Chestplate, Golden_Leggings, Golden_Boots, Apple, Tomato }
 public enum EPlayerAction { PickUP, Chop, Dig, Mine1, Mine2, Mine3 }
 public enum EEquipType { Helmet, Chest, Gloves, Pants, Boots, Jewels, Book, Weapon, Food, Potion }
 
@@ -31,7 +32,11 @@ public abstract class ItemSO : ScriptableObject
     [Header("----------blueprints---------------")]
     public Blueprint Blueprint;
     public abstract void Use();
+    public abstract void Equip();
 
+    public Action EquipFromInventory;
+    public Action ConsumableFromInventory;
+    public Action RemoveFromInventory;
 }
 
 

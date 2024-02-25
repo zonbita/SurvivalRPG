@@ -9,7 +9,7 @@ public class Equip : Item
 
     public override void Use()
     {
-        //EquipManager.Instance.Equipment(this, EquipType);  // Equip
+        EquipManager.Instance.Equipment(this, EquipType);  // Equip
     }
     
 }

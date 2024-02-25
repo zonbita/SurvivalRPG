@@ -27,6 +27,8 @@ MonoBehaviour:
   Attributes:
   - attribute: 0
     Value: 3
+  - attribute: 7
+    Value: 1
   Blueprint:
     RequiredItems:
     - item: {fileID: 11400000, guid: 646b324f2cf2a904b9e983957bb18c83, type: 2}

@@ -83,7 +83,5 @@ public class Character_Player : CharacterBase
        
     }
 
-    
-
-
 }
+

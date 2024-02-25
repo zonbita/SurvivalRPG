@@ -71,13 +71,13 @@ public static class GlobalVar
                 s = "white";
                 break;
             case EItemRarity.Common:
-                s = "aqua";
+                s = "#FFFACD";
                 break;
             case EItemRarity.Rare:
                 s = "Orange";
                 break;
             case EItemRarity.Epic:
-                s = "purple";
+                s = "#5F9EA0";
                 break;
             case EItemRarity.Legendary:
                 s = "red";

@@ -81,11 +81,9 @@ public class InventorySlot_UI : MonoBehaviour, IDropHandler, IPointerClickHandle
 
     public void OnDrop(PointerEventData eventData)
     {
+        DragItem_UI drag = eventData.pointerDrag.GetComponent<DragItem_UI>();
 
-        GameObject go = eventData.pointerDrag;
-        DragItem_UI drag = go.GetComponent<DragItem_UI>();
-
-        if (drag.SlotUI.inv == null || inv == null) return;
+        if (drag.SlotUI.inv == null || inv == null || drag.SlotUI == this) return;
 
         if (drag.SlotUI.inv != inv) // Inventory is not the same
         {

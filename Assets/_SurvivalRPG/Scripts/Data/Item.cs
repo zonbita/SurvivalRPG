@@ -5,8 +5,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item", menuName = "Item/NewItem")]
-public class Item : ItemSO
+public class Item : ItemSO, IPickup
 {
+
+
     private void Awake()
     {
             
@@ -17,8 +19,11 @@ public class Item : ItemSO
         
     }
 
+    public override void Equip()
+    {
+    }
 
-    public void RemoveFromInventory()
+    public void Pickup(ItemDrop item)
     {
         
     }

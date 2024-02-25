@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -14,6 +12,7 @@ public class Consumable : Item
 
     public override void Use()
     {
+       
         // Heal the player
         PlayerStats playerStats = Character_Player.Instance.playerStats;
 
@@ -25,10 +24,10 @@ public class Consumable : Item
 
         if (thirstyGain > 0)
             playerStats.HealThirsty(thirstyGain);
-
+       
         Debug.Log(name + " consumed!");
 
-        RemoveFromInventory();
+        ConsumableFromInventory?.Invoke();
     }
 
 }

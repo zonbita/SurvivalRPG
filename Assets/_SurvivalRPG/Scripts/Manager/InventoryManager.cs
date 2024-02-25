@@ -1,16 +1,20 @@
-using AYellowpaper.SerializedCollections;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 
+[System.Serializable]
 public struct InventoryItem
 {
     public ItemSO Data;
     public int Quantity;
     public int Duration;
+
+    public void Empty()
+    {
+        Data = null;
+        Quantity = 0;
+        Duration = 0;
+    }
 }
 
 [System.Serializable]
@@ -22,6 +26,13 @@ public class InventoryManager : MonoBehaviour
     public int inventorySize => InventoryItem.Length;
 
     private bool isFull => inventoryItem.Where(x => x.Data == null).Any() == false;
+
+    internal bool isEquipItem(int slot) 
+    {
+        EItemCategory category = inventoryItem[slot].Data.Category;
+        if (category == EItemCategory.Armor || category == EItemCategory.Weapon ) return true;
+        return false;
+    } 
 
     // Event
     public System.Action<InventoryManager,int> OnInventoryChangeSlot;
@@ -78,27 +89,69 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+
+    
+
     public void Add(ItemSO item, int quantity)
     {
         if (item.ItemID == EItemID.Null || isFull) return;
 
+        int Max = item.MaxStack;
         
-        if (item.MaxStack > 0)
+        if (Max > 0)
         {
             while (quantity > 0 && !isFull)
             {
-                for (int i = 0; i < inventoryItem.Length - 1; i++)
+                int[] Is = inventoryItem
+                    .Select((item, index) => new { Item = item, Index = index })
+                    .Where(itemWithIndex => itemWithIndex.Item.Data != null && itemWithIndex.Item.Data.ItemID == item.ItemID && itemWithIndex.Item.Quantity < Max) 
+                    .Select(itemWithIndex => itemWithIndex.Index)
+                    .ToArray();
+
+                if (Is.Length > 0)
                 {
-                    if (inventoryItem[i].Data.ItemID == item.ItemID)
+                    foreach (int i in Is)
                     {
-                        int total = quantity + inventoryItem[i].Quantity;
-                        if (total > item.MaxStack)
-                        {
-                            inventoryItem[i].Quantity = item.MaxStack;
-                            quantity = total - item.MaxStack;
-                        }
+                        if (quantity == 0 || isFull) break;
                         else
-                            inventoryItem[i].Quantity += quantity;
+                        {
+                            int t = quantity + inventoryItem[i].Quantity;
+                            if (t > Max)
+                            {
+                                inventoryItem[i].Quantity = Max;
+                                quantity = t - quantity;
+                            }
+                            else 
+                            {
+                                inventoryItem[i].Quantity = t;
+                                quantity = 0;
+                            } 
+                            OnInventoryChangeSlot?.Invoke(this, i);
+                        }
+                    }
+
+                    if (quantity == 0 || isFull) break;
+                    else
+                    {
+                        int s = GetEmptySlot();
+                        if (s != -1)
+                        {
+                            inventoryItem[s].Data = item;
+                            inventoryItem[s].Quantity += quantity;
+                            OnInventoryChangeSlot?.Invoke(this, s);
+                            quantity = 0;
+                        }
+                    }
+                }
+                else
+                {
+                    int s = GetEmptySlot();
+                    if (s != -1)
+                    {
+                        inventoryItem[s].Data = item;
+                        inventoryItem[s].Quantity += quantity;
+                        OnInventoryChangeSlot?.Invoke(this, s);
+                        quantity = 0;
                     }
                 }
             }
@@ -161,7 +214,7 @@ public class InventoryManager : MonoBehaviour
     
     public bool SwitchEquipItem(int index1, EEquipType t)
     {
-        if (inventoryItem[index1].Data == null) return false;
+        if (inventoryItem[index1].Data == null || !(inventoryItem[index1].Data as Equip)) return false;
 
         EquipManager.Instance.OnChangeEquipSlot((Equip)inventoryItem[index1].Data);
         Equip EQ = EquipManager.Instance.Equipment((Equip)inventoryItem[index1].Data, t);
@@ -192,5 +245,12 @@ public class InventoryManager : MonoBehaviour
     public int GetQuantityTotal(EItemID EItemID)
     {
         return inventoryItem.Sum(x => x.Data.ItemID == EItemID ? x.Quantity : 0);
+    }
+
+
+    public void DropItem(int slot)
+    {
+        if(inventoryItem[slot].Data != null) return;
+
     }
 }

@@ -5,7 +5,7 @@ public  class ItemDrop : MonoBehaviour, IAction
 {
     public ItemSO itemSO;
     public ItemSO ItemSO => itemSO;
-    [Min(1)][SerializeField] private int quantity;
+    [Min(1)][SerializeField] internal int quantity;
     //public int Quantity => quantity;
 
     GameObject prefab;
@@ -16,18 +16,25 @@ public  class ItemDrop : MonoBehaviour, IAction
 
     private void Awake()
     {
+        
+    }
+
+    public void Init()
+    {
         prefab = Instantiate(itemSO.Prefab, transform);
         gameObject.tag = "Item";
-        gameObject.name = itemSO.Name;
+        gameObject.name = itemSO.Name + "Item";
 
         capsule = GetComponent<CapsuleCollider>();
         UI = GetComponent<NameHud_UI>();
-        
+
         capsule.isTrigger = true;
         Action = itemSO.Action;
+    }
 
-        //quantity = quantity > itemSO.MaxStack ? itemSO.MaxStack : quantity;
-
+    private void Start()
+    {
+        Init();
         SetNameAndColor();
     }
 

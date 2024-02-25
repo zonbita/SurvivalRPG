@@ -6,7 +6,8 @@ using UnityEngine;
 public class PlayerInventory : InventoryManager
 {
     public static PlayerInventory Instance { get; private set; }
-    public int SelectItem {  get; private set; }
+    public int SelectSlot = -1;
+
 
     private void Awake()
     {
@@ -64,11 +65,62 @@ public class PlayerInventory : InventoryManager
         }
         else
         {
-            //GameManager.Instance.EquipBtn.interactable = inventoryItem[slot].Data = true ? true : false;
-            GameManager.Instance.DropBtn.interactable = inventoryItem[slot].Data.isDrop = true ? true : false;
-            //GameManager.Instance.DropBtn.interactable = inventoryItem[slot].Data.isDrop = true ? true : false;
+            SelectSlot = slot;
+            GameManager.Instance.EquipBtn.interactable = isEquipItem(SelectSlot) ? true : false;
+            GameManager.Instance.DropBtn.interactable = inventoryItem[slot].Data.isDrop == true ? true : false;
+            GameManager.Instance.UseBtn.interactable = inventoryItem[slot].Data.Category == EItemCategory.Consumable ? true : false;
 
         }
 
     }
+
+    // Buttons in Player Inventory
+    public void ClickButton(EClickPlayerInventoryButton button)
+    {
+        if (inventoryItem[SelectSlot].Data != null)
+        {
+            switch (button)
+            {
+                case EClickPlayerInventoryButton.Use:
+                    inventoryItem[SelectSlot].Data.ConsumableFromInventory += ConsumableFromInventory;
+                    inventoryItem[SelectSlot].Data.Use();
+                    break;
+                case EClickPlayerInventoryButton.Equip:
+
+                    inventoryItem[SelectSlot].Data.Use();
+                    break;
+                case EClickPlayerInventoryButton.Drop:
+                    inventoryItem[SelectSlot].Data.RemoveFromInventory += RemoveFromInventory;
+                    SpawnItemManager.Instance.SpawnAItem(inventoryItem[SelectSlot].Data, inventoryItem[SelectSlot].Quantity, this.transform.position + new Vector3(0,0,1));
+                    inventoryItem[SelectSlot].Data.RemoveFromInventory();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void RemoveFromInventory()
+    {
+        if (inventoryItem[SelectSlot].Data != null)
+        {
+            inventoryItem[SelectSlot].Empty();
+            OnInventoryChangeSlot(this, SelectSlot);
+        }
+    }
+
+    private void ConsumableFromInventory()
+    {
+        if(inventoryItem[SelectSlot].Data.MaxStack > 0)
+        {
+            inventoryItem[SelectSlot].Quantity -= 1;
+            if (inventoryItem[SelectSlot].Quantity == 0) inventoryItem[SelectSlot].Empty();
+        }
+        else
+        {
+            inventoryItem[SelectSlot].Empty();
+        }
+        OnInventoryChangeSlot(this, SelectSlot);
+    }
 }
+public enum EClickPlayerInventoryButton { Use, Equip, Drop }

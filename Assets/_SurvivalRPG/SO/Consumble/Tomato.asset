@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 426b9e392bb84954ca3dd58d09b9cafc, type: 3}
-  m_Name: Apple
+  m_Name: Tomato
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: c1c2bf5555434c441844791f8150ea3d, type: 3}
-  ItemID: 0
+  ItemID: 16
   Name: Tomato
   Rarity: 0
   Description: 

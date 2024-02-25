@@ -1,9 +1,7 @@
-using System.Drawing;
+
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class ItemDescription_UI : MonoBehaviour
 {
@@ -17,7 +15,7 @@ public class ItemDescription_UI : MonoBehaviour
     {
         imageItem.sprite = item.Icon;
         imageItem.enabled = true;
-        text.text = item.Name + "\nCrafting Time: " + item.Duration + "\n" + "Category: " + item.Category ;
+        text.text = $"<color={GlobalVar.GetRarityColor(item.Rarity)}>{item.name}</color>" + "\nCrafting Time: " + item.Duration + "\n" + "Category: " + item.Category;
         Destext.text = SetDescription(item);
         SetRequirementSlots(item);
     }
