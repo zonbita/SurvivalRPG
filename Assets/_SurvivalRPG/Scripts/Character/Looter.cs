@@ -38,6 +38,7 @@ public class Looter : MonoBehaviour
     void SphereCast()
     {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, Radius, Vector3.up, 1, layerMask);
+
         if (hits != null && hits.Length > 0)
         {
             Transform t = this.transform;
@@ -48,7 +49,7 @@ public class Looter : MonoBehaviour
             .FirstOrDefault();
 
 
-            if(OutlineObject != closestTransform.gameObject)
+            if( OutlineObject != closestTransform.gameObject)
             {
                 Outline O;
                 if (OutlineObject != null)
@@ -63,7 +64,11 @@ public class Looter : MonoBehaviour
                 O = OutlineObject.GetComponentInChildren<Outline>();
 
                 if (O != null) O.enabled = true;
-                else O = OutlineObject.transform.GetChild(1).AddComponent<Outline>();
+                else {
+                    if(!OutlineObject && OutlineObject.transform.GetChild(1))
+                    O = OutlineObject.transform.GetChild(1).AddComponent<Outline>();
+                } 
+
 
                 O.OutlineMode = Outline.Mode.OutlineAll;
                 

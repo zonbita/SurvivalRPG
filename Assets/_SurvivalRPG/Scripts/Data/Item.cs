@@ -7,7 +7,7 @@ public class Item : ItemSO, IPickup
 {
     private void Awake()
     {
-            
+       
     }
 
     public override void Use()

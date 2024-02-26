@@ -29,6 +29,12 @@ public class AttributeTotal
             attributes[a.Name] = a.Value;
     }
 
+    public void AddList(List<Attribute> array)
+    {
+        foreach(Attribute a in array)
+            attributes[a.Name] = a.Value;
+    }
+
     public float Get_A_AttributeTotal(Attribute a)
     {
         if (!attributes.ContainsKey(a.Name)) return 0;
@@ -41,5 +47,48 @@ public class AttributeTotal
         {
             return 0; // Return 0 if the attribute is not found
         }
+        
     }
+
+    public float Get_A_Attribute(EAttribute a)
+    {
+        if (!attributes.ContainsKey(a)) return 0;
+        if (attributes.TryGetValue(a, out float totalValue))
+        {
+            return totalValue; // Return 
+        }
+        else
+        {
+            return 0; // Return 0
+        }
+    }
+
+    public void Add_A_AttributeTotal(AttributeTotal a)
+    {
+        foreach(var e in a.attributes)
+        {
+            if (attributes.ContainsKey(e.Key))
+                attributes[e.Key] += e.Value;
+            else
+                attributes[e.Key] = e.Value;
+        }
+
+    }
+
+    public void SetNew(AttributeTotal attributeTotal)
+    {
+        attributes.Clear();
+
+        foreach (var kvp in attributeTotal.attributes)
+        {
+            attributes[kvp.Key] = kvp.Value;
+        }
+    }
+
+    public void Clear()
+    {
+        attributes.Clear();
+        attributes = new();
+    }
+
 }

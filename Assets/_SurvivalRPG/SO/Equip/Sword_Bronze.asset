@@ -26,7 +26,7 @@ MonoBehaviour:
   Category: 1
   Attributes:
   - Name: 0
-    Value: 3
+    Value: 9
   - Name: 12
     Value: 3
   - Name: 13
@@ -35,7 +35,7 @@ MonoBehaviour:
     Value: 15
   Blueprint:
     RequiredItems:
-    - item: {fileID: 11400000, guid: 149d97b07a585194ab44a710bb6c0596, type: 2}
+    - item: {fileID: 11400000, guid: 46207210ff602d64c8c4d90b88cf53a1, type: 2}
       Quantity: 100
     - item: {fileID: 11400000, guid: 646b324f2cf2a904b9e983957bb18c83, type: 2}
       Quantity: 2

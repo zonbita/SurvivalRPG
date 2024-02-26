@@ -31,16 +31,18 @@ public class AttributeManager : Singleton<AttributeManager>
     /// <summary>
     /// Update Player All Attribute
     /// </summary>
-    public void UpdatePlayerAttribute()
+    public void UpdateEquipAttribute()
     {
         EquipmentAttributeTotal = CalAttributeTotal(EquipManager.Instance.GetEquipList);
-/*        if(EquipmentAttributeTotal != null )
-        {
-            foreach (var a in EquipmentAttributeTotal.attributes)
-            {
-                print(a.Key.ToString() + " " + a.Value.ToString());
-            }
-        }*/
+        if(EquipmentAttributeTotal != null) { Character_Player.Instance.playerStats.UpdateAttributeTotal(EquipmentAttributeTotal); }
+
+        /*        if(EquipmentAttributeTotal != null )
+                {
+                    foreach (var a in EquipmentAttributeTotal.attributes)
+                    {
+                        print(a.Key.ToString() + " " + a.Value.ToString());
+                    }
+                }*/
 
         if (Character_Player.Instance.playerStats != null) UpdatePlayerAttributeUI();
     }
@@ -59,7 +61,6 @@ public class AttributeManager : Singleton<AttributeManager>
                 att.Value,
                 total
                 );
-            print(total);
         }
         PlayerAttributeText.text = format;
     }

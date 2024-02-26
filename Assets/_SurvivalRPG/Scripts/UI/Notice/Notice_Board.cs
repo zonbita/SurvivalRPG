@@ -16,6 +16,8 @@ public class Notice_Board : Singleton<Notice_Board>
 
     public void ShowNotice(string message, float delay)
     {
+        if (Board.gameObject.activeSelf == true) return;
+
         Board.gameObject.SetActive(true);
         if(!TMP_text) TMP_text = GetComponentInChildren<Text>();
         TMP_text.text = message;

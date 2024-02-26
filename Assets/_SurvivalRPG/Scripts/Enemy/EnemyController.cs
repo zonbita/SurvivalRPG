@@ -10,14 +10,30 @@ using UnityEngine.AI;
 public class EnemyController : CharacterBase
 {
     [SerializeField] internal List<Attribute> attributes;
-    Movement movement;
-    Vector3 Target;
+    
     CharacterCombat characterCombat;
+
+    Coroutine coroutineNormal;
+    Vector3 Target;
     void Start()
     {
         characterCombat = GetComponent<CharacterCombat>();
+        characterCombat.OnNormal += OnNormal;
     }
 
+    IEnumerator StartNormal()
+    {
+        characterCombat.Normal();
+        yield return new WaitForSeconds(4);
+        StopCoroutine(StartNormal());
+        coroutineNormal = null;
+    }
+
+    private void OnNormal()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * 6;
+        navMesh.SetDestination(transform.position + randomDirection);
+    }
 
     void Update()
     {
@@ -40,7 +56,7 @@ public class EnemyController : CharacterBase
             if (distance <= navMesh.stoppingDistance)
             {
                 // In Battle
-                GetComponent<CharacterCombat>().Battle();
+                characterCombat.Battle();
 
                 // Check Player Health
                 if (GameManager.Instance.Player.GetComponent<PlayerStats>().isDead == false)
@@ -52,18 +68,22 @@ public class EnemyController : CharacterBase
                 else
                 {
                     // Stop battle animations
-                    GetComponent<CharacterCombat>().Normal();
-                    characterCombat.healthSlider.gameObject.SetActive(false);
+                    characterCombat.Normal();
                     target = null;
                 }
             }
+        }
+        else
+        {
+            if (coroutineNormal == null)
+                coroutineNormal = StartCoroutine(StartNormal());
         }
     }
 
     void FaceTarget()
     {
         Vector3 direction = (target.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, -90, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 

@@ -2,6 +2,7 @@ using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(MoveByKey))]
@@ -20,6 +21,9 @@ public class Character_Player : CharacterBase
     internal PlayerInventory playerInventory;
     internal AlwaysLookAt alwaysLookAt;
     internal Looter looter;
+    [SerializeField] LayerMask EnemyLayerMask;
+    [SerializeField] float Radius = 3;
+    [SerializeField] BoxCollider AttackBox;
 
     [Header("Equipment")]
     public Transform headTransform;
@@ -36,6 +40,8 @@ public class Character_Player : CharacterBase
     public GameObject Chest;
     public GameObject Pants;
     public GameObject Boots;
+
+    Transform EnemyTransform;
 
     CinemachineVirtualCamera virtualCamera;
     protected override void Awake()
@@ -62,7 +68,8 @@ public class Character_Player : CharacterBase
 
         GameManager.Instance.GameRevive += () => 
         {
-            _animator.Play("Idle");
+            _animator.Rebind();
+            _animator.Update(0f);
             movement.enabled = true;
             looter.enabled = true;
             survivalManager.enabled = true;
@@ -81,12 +88,88 @@ public class Character_Player : CharacterBase
     
     public override void Attack()
     {
-        /*        if (Time.time - attackTime < 0.5)
-                    return;
+        if (AttachList[EEquipType.Weapon])
+        {
+            if (Time.time - attackTime < 2.0)
+                return;
 
-                attackTime = Time.time;*/
-        _animator.SetTrigger(AttackHash);
+            attackTime = Time.time;
+            _animator.SetInteger("WeaponState", 1);
+            _animator.SetTrigger("Attack");
+
+
+            EnemyTransform = FindEnemy();
+            StartAttackBox();
+        }
+        else
+        {
+            if (Time.time - attackTime < 2.0)
+                return;
+
+            attackTime = Time.time;
+            _animator.SetInteger("WeaponState", 0);
+            _animator.SetTrigger("Attack");
+
+            EnemyTransform = FindEnemy();
+            StartAttackBox();
+        }
+
     }
+
+    IEnumerator ResetEnemyTarget()
+    {
+        yield return new WaitForSeconds(1);
+        EnemyTransform = null;
+    }
+
+    private void Update()
+    {
+        if (EnemyTransform) FaceTarget(EnemyTransform);
+    }
+
+    Transform FindEnemy()
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, Radius, Vector3.up, 1, EnemyLayerMask);
+        if (hits != null && hits.Length > 0)
+        {
+            Transform closestTransform = hits
+            .Select(x => x.transform)
+            .OrderBy(transform => Vector3.Distance(transform.position, this.transform.position))
+            .FirstOrDefault();
+
+            StartCoroutine( ResetEnemyTarget() );
+
+            return closestTransform;
+        }
+        return null;
+    }
+
+    void StartAttackBox()
+    {
+        RaycastHit[] hits = Physics.BoxCastAll(AttackBox.transform.position, AttackBox.size, Vector3.up, AttackBox.transform.rotation, EnemyLayerMask);
+        if (hits != null && hits.Length > 0)
+        {
+            foreach(RaycastHit hit in hits)
+            {
+                if (hit.transform.CompareTag("Enemy"))
+                {
+                    int zdamage;
+                    zdamage = (int)playerStats.attTotal.Get_A_Attribute(EAttribute.Strength);
+                    print(playerStats.attTotal.Get_A_Attribute(EAttribute.Strength));
+                    hit.transform.gameObject.GetComponent<IDamageable>().TakeDamage(zdamage);
+                }
+                    
+            }
+        }
+    }
+
+    void FaceTarget(Transform target)
+    {
+        Vector3 direction = (target.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        this.transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+    }
+
 
     private void OnHealth(float hp)
     {

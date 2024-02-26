@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IDamageable
 {
-    internal readonly int DieHash = Animator.StringToHash("Death");
+    internal readonly int DieHash = Animator.StringToHash("isDead");
 
     [SerializeField] internal float maxHealth = 100;
     [SerializeField] internal float currentHealth = 100;
 
     [SerializeField] internal Animator _animator;
 
-    public Action OnDied;
+    public Action OnDied, OnTakeDamage;
     public UnityEvent<float> OnHealth;
 
     internal bool isDead = false;
@@ -35,15 +35,16 @@ public class Health : MonoBehaviour
     public virtual void TakeDamage(float damage)
     {
         CalculatorTakeDamage(damage);
-       
+
         if (currentHealth <= 0)
         {
-            if(!isDead)
+            if (!isDead)
                 Dead();
         }
+        else OnTakeDamage?.Invoke();
     }
 
-    public virtual void CalculatorTakeDamage(float damage)
+    void CalculatorTakeDamage(float damage)
     {
         currentHealth = Math.Clamp(currentHealth - damage, 0, maxHealth);
         OnHealth?.Invoke(currentHealth / maxHealth);
@@ -65,5 +66,10 @@ public class Health : MonoBehaviour
         currentHealth = Math.Clamp(currentHealth + amount, 0, maxHealth);
 
         OnHealth?.Invoke(currentHealth / maxHealth);
+    }
+
+    public void TakeDamageEffect(float damage, float max)
+    {
+        
     }
 }

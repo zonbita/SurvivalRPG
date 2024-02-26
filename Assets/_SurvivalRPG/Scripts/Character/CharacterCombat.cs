@@ -1,13 +1,13 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterCombat : MonoBehaviour
 {
-
     public float attackRate = 1f;
+    public float damage = 1f;
     private float attackCountdown = 0f;
 
     public event System.Action OnAttack;
@@ -18,15 +18,25 @@ public class CharacterCombat : MonoBehaviour
     internal CharacterStats stats;
     CharacterStats enemyStats;
 
+    AnimationsController animationsController;
+
     public Slider healthSlider;
 
     void Start()
     {
         stats = GetComponent<CharacterStats>();
-
+        animationsController = GetComponentInChildren<AnimationsController>();
 
         healthSlider.maxValue = stats.maxHealth;
         healthSlider.value = stats.currentHealth;
+        stats.OnDied += Death;
+        stats.OnTakeDamage += onTakeDamage;
+    }
+
+    private void onTakeDamage()
+    {
+        animationsController.Hit();
+
     }
 
     void Update()
@@ -44,7 +54,7 @@ public class CharacterCombat : MonoBehaviour
         {
             this.enemyStats = enemyStats;
             attackCountdown = 1f / attackRate;
-
+            animationsController.Attack();
             StartCoroutine(DoDamage(enemyStats, .6f));
 
             if (OnAttack != null)
@@ -68,14 +78,18 @@ public class CharacterCombat : MonoBehaviour
 
     public void Death()
     {
+        healthSlider.gameObject.SetActive(false);
+        transform.AddComponent<TimeLifeDisable>().LifeTime = 3;
+
         if (OnDeath != null)
             OnDeath();
     }
+
 
     IEnumerator DoDamage(CharacterStats stats, float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        enemyStats.TakeDamage(10);
+        enemyStats.TakeDamage(damage);
     }
 }

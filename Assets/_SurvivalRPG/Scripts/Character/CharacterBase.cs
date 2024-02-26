@@ -7,7 +7,6 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class CharacterBase : MonoBehaviour
 {
-    public Action<GameObject> Action_Die;
     public Rigidbody rb;
     public FillBar healthBar;
     public Animator _animator; 
@@ -92,7 +91,7 @@ public class CharacterBase : MonoBehaviour
 
     public virtual void Death()
     {
-        Action_Die(this.gameObject);
+
     }
 
     public virtual void Attack()

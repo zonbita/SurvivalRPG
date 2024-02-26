@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerStats : CharacterStats
 {
     [SerializeField] internal List<Attribute> attributes;
+    [HideInInspector] public AttributeTotal attTotal = new();
     public enum EPlayerStats { Health, Hunger, Thirsty }
 
     public float maxHunger = 100f,maxThirsty = 100f;
@@ -17,6 +18,8 @@ public class PlayerStats : CharacterStats
     {
         base.Awake();
         GameManager.Instance.GameRevive += GameRevive;
+
+
     }
 
     private void GameRevive()
@@ -25,7 +28,16 @@ public class PlayerStats : CharacterStats
         currentHunger = maxHunger;
         currentThirsty = maxThirsty;
         isDead = false;
+
+
         GetHUD();
+    }
+
+    public void UpdateAttributeTotal(AttributeTotal EquipAttributeTotal)
+    {
+        attTotal.Clear();
+        attTotal.AddList(attributes);
+        attTotal.Add_A_AttributeTotal(EquipAttributeTotal);
     }
 
     private void GetHUD()
@@ -38,7 +50,7 @@ public class PlayerStats : CharacterStats
     protected override void Start()
     {
         base.Start();
-
+        attTotal.AddList(attributes);
     }
 
     public void SurvivalDamage(float damage, EPlayerStats type)
@@ -71,6 +83,11 @@ public class PlayerStats : CharacterStats
         }
     }
 
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+        UpdateUI(EPlayerStats.Health);
+    }
 
     public void HealHunger(float amount)
     {

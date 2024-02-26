@@ -31,13 +31,13 @@ public class AnimationsController : MonoBehaviour
                 _animator.SetBool(MovingHash, true);
                 var dirrection = position - _lastPosition;
                 dirrection.y = 0;
-                _lastRotation = Quaternion.LookRotation(dirrection);
+                //_lastRotation = Quaternion.LookRotation(dirrection);
             }
             else
             {
                 _animator.SetBool(MovingHash, false);
             }
-            transform.rotation = Quaternion.Lerp(transform.rotation,_lastRotation,10f*Time.deltaTime);
+            //transform.rotation = Quaternion.Lerp(transform.rotation,_lastRotation,10f*Time.deltaTime);
             _lastPosition = position;
         }
     }
@@ -57,12 +57,15 @@ public class AnimationsController : MonoBehaviour
 
     public void SetDead()
     {
-        _animator.SetBool(IsDeadHash, true);
+        _animateWhenRun = false;
+        _animator.SetTrigger(IsDeadHash);
     }
+
     public void ClearDead()
     {
-        _animator.SetBool(IsDeadHash, false);
-        _animator.Play("Idle");
+        _animator.Rebind();
+        _animator.Update(0f);
+        _animateWhenRun = true;
     }
     public void Attack()
     {

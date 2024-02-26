@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public FillBar healthFillBar;
     [Header("----------------[ GameObject ]---------------")]
     public Character_Player Player;
+    public Character_Player PlayerPrefab;
     public GameObject Notice_Board;
 
     public Transform ReviveTransform;
@@ -128,23 +129,22 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Spawn_Player()
     {
-        Character_Player cp = FindObjectOfType<Character_Player>();
 
-        if (cp != null)
+        if (Player != null)
         {
             GameRevive();
         }
         else
         {
-            if (Player != null)
+            if (PlayerPrefab != null) 
             {
-                GameObject go = Instantiate(Player).transform.gameObject;
-                cp = go.GetComponent<Character_Player>();
+                GameObject go = Instantiate(PlayerPrefab).transform.gameObject;
+                Player = go.GetComponent<Character_Player>();
             }
             SwitchPanel(EPanel.GamePlay);
         }
-        yield return new WaitUntil(() => cp != null);
-        AttributeManager.Instance.UpdatePlayerAttribute();
+        yield return new WaitUntil(() => Player != null);
+        AttributeManager.Instance.UpdateEquipAttribute();
     }
 
     public int Level

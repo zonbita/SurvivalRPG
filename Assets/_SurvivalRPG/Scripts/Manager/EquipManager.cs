@@ -16,8 +16,6 @@ public class EquipManager : Singleton<EquipManager>
     public Sprite[] imageList;
     [SerializeField] List<InventoryEquipSlot_UI> InventoryEquipSlot_UIs;
 
-    internal List<Attribute> EquipAttributes;
-
     [SerializeField] private EquipContainer[] equipmentSlots = new EquipContainer[10];
 
     public EquipContainer[] EquipmentSlots
@@ -104,10 +102,9 @@ public class EquipManager : Singleton<EquipManager>
                 }
 
                 
-                AttributeManager.Instance.UpdatePlayerAttribute();
+                AttributeManager.Instance.UpdateEquipAttribute();
                 Character_Player.Instance.Attach(item.EquipType, item.Prefab);
                 InventoryEquipSlot_UIs[i].OnChangeEquip(item);
-                //AttributeManager.Instance.CalAttributeTotal(new Item[] { equipmentSlots[i].Data });
 
                 return true;
             }
